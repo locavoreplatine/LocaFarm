@@ -3,7 +3,7 @@ package locavoreplatine.locafarm.model
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
-@Entity(tableName = "user")
+@Entity
 data class UserModel(
         var firstName : String,
         var lastName : String,

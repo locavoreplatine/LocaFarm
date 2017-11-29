@@ -7,16 +7,16 @@ import locavoreplatine.locafarm.model.UserModel
 
 @Dao
 interface UserDao {
-    @get:Query("SELECT * FROM user")
+    @get:Query("SELECT * FROM UserModel")
     val all: LiveData<List<UserModel>>
 
-    @Query("SELECT * FROM user WHERE userId IN (:arg0)")
+    @Query("SELECT * FROM UserModel WHERE userId IN (:userIds)")
     fun getMultipleByIds(userIds: IntArray): List<UserModel>
 
-    @Query("SELECT count(*) FROM user")
+    @Query("SELECT count(*) FROM UserModel")
     fun getUserCount(): Int
 
-    @Query("SELECT * FROM user WHERE userId=:arg0")
+    @Query("SELECT * FROM UserModel WHERE userId=:userId")
     fun getUserById(userId: Int?): LiveData<UserModel>
 
     @Insert(onConflict = REPLACE)
@@ -25,9 +25,11 @@ interface UserDao {
     @Update(onConflict = REPLACE)
     fun update(user: UserModel)
 
-    @Query("DELETE FROM user")
-    fun flushSensorData()
+    @Query("DELETE FROM UserModel")
+    @Deprecated(message = "delete every entry of UserModel table use it at your own risk")
+    fun nukeUserTable()
 
     @Delete
     fun delete(user: UserModel)
+
 }
