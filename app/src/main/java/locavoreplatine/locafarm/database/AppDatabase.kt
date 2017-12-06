@@ -27,7 +27,7 @@ abstract class AppDatabase : RoomDatabase() {
                 if (TEST_MODE) {
                     db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).allowMainThreadQueries().build()
                 } else {
-                    db = Room.databaseBuilder(context, AppDatabase::class.java, databaseName).build()
+                    db = Room.databaseBuilder(context, AppDatabase::class.java, databaseName).allowMainThreadQueries().build()
                 }
             }
             return db!!

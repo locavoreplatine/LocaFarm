@@ -22,8 +22,8 @@ class UserProfilFragment : Fragment(), LifecycleOwner{
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val userProfilViewModel = UserProfileViewModel(activity!!.application)
-        val dao = userProfilViewModel.userDao
-        val user = dao.getUserById(arguments?.getInt("id"))
+        userProfilViewModel.setUser(arguments?.getInt("id")!!);
+        val user = userProfilViewModel.getUser();
         user.observe(this, Observer {
             Log.e(this.tag,"observer")
             tv1.text=it?.firstName

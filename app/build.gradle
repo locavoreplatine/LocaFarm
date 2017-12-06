@@ -27,18 +27,18 @@ android {
 project.ext {
     appcompat = "27.0.2"
     room = "1.0.0"
-    ioio = "5.07"
     maps = "11.4.2"
     retrofit = "2.3.0"
     constraintLayout = "1.0.2"
     mvvm = "1.0.0"
+    anko_version = "0.10.3"
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
-    // Android
+    //Android
     implementation "com.android.support:appcompat-v7:$appcompat"
     implementation "com.android.support:design:$appcompat"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -58,5 +58,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
+    //anko
+    implementation "org.jetbrains.anko:anko-commons:$anko_version"
+    implementation "org.jetbrains.anko:anko-design:$anko_version"
 
 }
