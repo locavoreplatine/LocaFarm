@@ -8,7 +8,7 @@ import android.content.Context
 import locavoreplatine.locafarm.model.FarmModel
 import locavoreplatine.locafarm.model.UserModel
 
-@Database(entities = arrayOf(UserModel::class,FarmModel::class), version = 1, exportSchema = false)
+@Database(entities = [(UserModel::class), (FarmModel::class)], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -24,10 +24,10 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): AppDatabase {
             if (db == null) {
-                if (TEST_MODE) {
-                    db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).allowMainThreadQueries().build()
+                db = if (TEST_MODE) {
+                    Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).allowMainThreadQueries().build()
                 } else {
-                    db = Room.databaseBuilder(context, AppDatabase::class.java, databaseName).allowMainThreadQueries().build()
+                    Room.databaseBuilder(context, AppDatabase::class.java, databaseName).allowMainThreadQueries().build()
                 }
             }
             return db!!

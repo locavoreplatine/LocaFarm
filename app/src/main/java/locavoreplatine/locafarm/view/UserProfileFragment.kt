@@ -12,11 +12,10 @@ import kotlinx.android.synthetic.main.fragment_user_profile.*
 import locavoreplatine.locafarm.R
 import locavoreplatine.locafarm.viewModel.UserProfileViewModel
 
-class UserProfilFragment : Fragment(), LifecycleOwner{
+class UserProfileFragment : Fragment(), LifecycleOwner{
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view : View = inflater.inflate(R.layout.fragment_user_profile,container)
-        return view
+        return inflater.inflate(R.layout.fragment_user_profile,container)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
