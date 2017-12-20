@@ -1,22 +1,25 @@
 package locavoreplatine.locafarm.database
 
-import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
+import io.reactivex.Single
 import locavoreplatine.locafarm.model.FarmModel
 
 @Dao
 interface FarmDao{
     @get:Query("SELECT * FROM FarmModel")
-    val all: LiveData<List<FarmModel>>
+    val all: Single<List<FarmModel>>
 
     @Query("SELECT * FROM FarmModel WHERE farmId IN (:farmIds)")
-    fun getMultipleByIds(farmIds: IntArray): List<FarmModel>
+    fun getMultipleFarmByIds(farmIds: IntArray): List<FarmModel>
 
     @Query("SELECT count(*) FROM FarmModel")
-    fun getUserCount(): Int
+    fun getFarmCount(): Int
 
     @Query("SELECT * FROM FarmModel WHERE farmId=:farmId")
-    fun getUserById(farmId: Int?): LiveData<FarmModel>
+    fun getFarmById(farmId: Int?): Single<FarmModel>
+
+    @Query("SELECT * FROM FarmModel WHERE name LIKE '%' || :arg0 || '%'")
+    fun findFarmByName(farmName: String?): Single<List<FarmModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOne(user: FarmModel)
