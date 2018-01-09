@@ -1,8 +1,11 @@
 
+
 # Contributing to the project
 
 As a contributor, here are the guidelines we would like you to follow:
-
+ - [Branch](#branch)
+	 - [master branch](#master)
+	 - [feature branch](#feature)
  - [Commit Message Guidelines](#commit)
 	 - [Commit Message Format](#format)
 	 - [Revert a commit](#revert)
@@ -10,6 +13,7 @@ As a contributor, here are the guidelines we would like you to follow:
 	 - [Commit subject](#subject)
 	 - [Commit body](#body)
 	 - [Commit footer](#footer)
+
 
 ## <a name="commit"></a> Commit Message Guidelines
 
@@ -62,3 +66,22 @@ The footer should contain any information about **Breaking Changes** and is also
 reference GitHub issues that this commit **Closes**.
 
 **Breaking Changes** should start with the word `BREAKING CHANGE:` with a space or two newlines. The rest of the commit message is then used for this.
+
+## <a name="branch"></a>Branch
+
+### <a name="master"></a>master branch
+master is the production branch, you shouldn't push your change directly on master except for critical hot-fix
+
+### <a name="feature"></a>feature branch
+feature branche are created when working on a specific feature.
+when the development of the feature is finished please do as following:
+
+commit your change (**don't push them**) then :
+```
+git checkout targetBranch
+git rebase targetBranch featureBranch
+git checkout targetBranch
+git merge featureBranch
+```
+
+
