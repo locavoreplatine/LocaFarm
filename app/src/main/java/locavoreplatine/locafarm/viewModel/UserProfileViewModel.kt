@@ -16,7 +16,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
 
     fun setUser(id: Int) {
         doAsync {
-            user.postValue(userDao.getUserById(id).value)
+            user.postValue(userDao.getUserById(id).blockingGet())
         }
     }
 

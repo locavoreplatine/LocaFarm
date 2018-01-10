@@ -1,35 +1,30 @@
 package locavoreplatine.locafarm.database
 
-import android.arch.lifecycle.LiveData
+
 import android.arch.persistence.room.*
 import android.arch.persistence.room.OnConflictStrategy.REPLACE
+import io.reactivex.Flowable
+import io.reactivex.Single
 import locavoreplatine.locafarm.model.UserModel
 
 @Dao
-interface UserDao {
+abstract class UserDao: BaseDao<UserModel> {
     @get:Query("SELECT * FROM UserModel")
-    val all: LiveData<List<UserModel>>
+    abstract val all: Single<List<UserModel>>
 
     @Query("SELECT * FROM UserModel WHERE userId IN (:userIds)")
-    fun getMultipleByIds(userIds: IntArray): List<UserModel>
+    abstract fun getMultipleByIds(userIds: IntArray): List<UserModel>
 
     @Query("SELECT count(*) FROM UserModel")
-    fun getUserCount(): Int
+    abstract fun getUserCount(): Int
 
     @Query("SELECT * FROM UserModel WHERE userId=:userId")
-    fun getUserById(userId: Int?): LiveData<UserModel>
+    abstract fun getUserById(userId: Int?): Single<UserModel>
 
-    @Insert(onConflict = REPLACE)
-    fun insertOne(user: UserModel)
-
-    @Update(onConflict = REPLACE)
-    fun update(user: UserModel)
+    @Query("SELECT * FROM UserModel WHERE firstName LIKE '%' || :userName || '%'")
+    abstract fun findFarmByName(userName: String?): Flowable<List<UserModel>>
 
     @Query("DELETE FROM UserModel")
     @Deprecated(message = "delete every entry of UserModel table use it at your own risk")
-    fun nukeUserTable()
-
-    @Delete
-    fun delete(user: UserModel)
-
+    abstract fun nukeUserTable()
 }

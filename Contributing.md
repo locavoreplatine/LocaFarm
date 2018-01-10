@@ -18,7 +18,7 @@ As a contributor, here are the guidelines we would like you to follow:
 ## <a name="commit"></a> Commit Message Guidelines
 
 We have very precise rules over how our git commit messages can be formatted.  This leads to **more
-readable messages** that are easy to follow when looking through the **project history**. 
+readable messages** that are easy to follow when looking through the **project history**.
 
 ### <a name="format"></a> Commit Message Format
 Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special
@@ -47,13 +47,14 @@ Must be one of the following:
 
 * **build**: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
 * **ci**: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
-* **docs**: Documentation only changes
+* **doc**: Documentation only changes
 * **feat**: A new feature
 * **fix**: A bug fix
 * **perf**: A code change that improves performance
 * **refactor**: A code change that neither fixes a bug nor adds a feature
 * **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
 * **test**: Adding missing tests or correcting existing tests
+* **version**: Update dependencies versions
 
 ### <a name="subject"></a>Subject
 The subject contains succinct description of the change
@@ -83,5 +84,3 @@ git rebase targetBranch featureBranch
 git checkout targetBranch
 git merge featureBranch
 ```
-
-
