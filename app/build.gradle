@@ -53,6 +53,12 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$room"
     kapt "android.arch.persistence.room:compiler:$room"
     testImplementation "android.arch.persistence.room:testing:$room"
+    implementation "android.arch.paging:runtime:1.0.0-alpha4-1"
+    testImplementation "android.arch.core:core-testing:$room"
+    testImplementation "android.arch.persistence.room:testing:$room"
+    implementation "android.arch.lifecycle:common-java8:$room"
+    implementation "android.arch.persistence.room:rxjava2:$room"
+    implementation "android.arch.lifecycle:reactivestreams:$room"
 
     //Junit
     testImplementation 'junit:junit:4.12'    
