@@ -22,7 +22,7 @@ abstract class UserDao: BaseDao<UserModel> {
     abstract fun getUserById(userId: Int?): Single<UserModel>
 
     @Query("SELECT * FROM UserModel WHERE firstName LIKE '%' || :userName || '%'")
-    abstract fun findFarmByName(userName: String?): Flowable<List<UserModel>>
+    abstract fun findUserByName(userName: String?): Flowable<List<UserModel>>
 
     @Query("DELETE FROM UserModel")
     @Deprecated(message = "delete every entry of UserModel table use it at your own risk")
