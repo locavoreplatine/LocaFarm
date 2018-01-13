@@ -19,7 +19,7 @@ abstract class FarmDao: BaseDao<FarmModel>{
     @Query("SELECT * FROM FarmModel WHERE farmId=:farmId")
     abstract fun getFarmById(farmId: Int?): Single<FarmModel>
 
-    @Query("SELECT * FROM FarmModel WHERE name LIKE '%' || :farmName || '%'")
+    @Query("SELECT * FROM FarmModel WHERE name LIKE '%' || :farmName || '%' ORDER BY name COLLATE NOCASE ASC LIMIT 10")
     abstract fun findFarmByName(farmName: String?): Flowable<List<FarmModel>>
 
     @Query("DELETE FROM FarmModel")
