@@ -23,7 +23,7 @@ class FarmHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
     override fun onClick(v: View) {
 //            val context = itemView.context
 //            val showFarmIntent = Intent(context, FarmActivity::class.java)
-//            showFarmIntent.putExtra(PHOTO_KEY, farm)
+//            showFarmIntent.putExtra(FARM_KEY, farm)
 //            context.startActivity(showFarmIntent)
     }
 

@@ -11,23 +11,23 @@ import locavoreplatine.locauser.view.UserHolder
 /**
  * Created by sparow on 14/01/18.
  */
-class FinderAdapter(private val objects: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FinderAdapter(private val items:  ArrayList<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
-    // The items to display in your RecyclerView
-    private val items: List<Any>? = null
+//    // The items to display in your RecyclerView
+//    private val items: List<Any>? = null
 
     private val USER = 0
     private val FARM = 1
 
 
-    override fun getItemCount() = objects.size
+    override fun getItemCount() = items.size
 
 
     override fun getItemViewType(position: Int): Int {
-        if (items?.get(position) is UserModel) {
+        if (items.get(position) is UserModel) {
             return USER
-        } else if (items?.get(position) is FarmModel) {
+        } else if (items.get(position) is FarmModel) {
             return FARM
         }
         return -1
@@ -73,16 +73,16 @@ class FinderAdapter(private val objects: List<Any>) : RecyclerView.Adapter<Recyc
     }
 
     private fun configureDefaultViewHolder(vh: RecyclerViewSimpleTextViewHolder, position: Int) {
-        vh.label!!.text = items!![position] as CharSequence
+        vh.label!!.text = items[position] as CharSequence
     }
 
     private fun configureViewHolder1(vUser: UserHolder, position: Int) {
-        val user = items!![position] as UserModel
+        val user = items[position] as UserModel
         vUser.bindUser(user)
     }
 
     private fun configureViewHolder2(vFarm: FarmHolder,position: Int) {
-        val farm = items!![position] as FarmModel
+        val farm = items[position] as FarmModel
         vFarm.bindFarm(farm)
     }
 
