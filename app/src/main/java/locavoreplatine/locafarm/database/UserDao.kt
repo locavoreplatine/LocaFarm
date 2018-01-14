@@ -12,6 +12,7 @@ abstract class UserDao: BaseDao<UserModel> {
     @get:Query("SELECT * FROM UserModel")
     abstract val all: Single<List<UserModel>>
 
+    @Transaction
     @Query("SELECT * FROM UserModel WHERE userId IN (:userIds)")
     abstract fun getMultipleByIds(userIds: IntArray): List<UserModel>
 
@@ -21,6 +22,7 @@ abstract class UserDao: BaseDao<UserModel> {
     @Query("SELECT * FROM UserModel WHERE userId=:userId")
     abstract fun getUserById(userId: Int?): Single<UserModel>
 
+    @Transaction
     @Query("SELECT * FROM UserModel WHERE firstName LIKE '%' || :userName || '%' ORDER BY firstName COLLATE NOCASE ASC LIMIT 10")
     abstract fun findUserByName(userName: String?): Flowable<List<UserModel>>
 

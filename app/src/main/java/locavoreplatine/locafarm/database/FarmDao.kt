@@ -11,6 +11,7 @@ abstract class FarmDao: BaseDao<FarmModel>{
     @get:Query("SELECT * FROM FarmModel")
     abstract val all: Single<List<FarmModel>>
 
+    @Transaction
     @Query("SELECT * FROM FarmModel WHERE farmId IN (:farmIds)")
     abstract fun getMultipleFarmByIds(farmIds: IntArray): List<FarmModel>
 
@@ -20,6 +21,7 @@ abstract class FarmDao: BaseDao<FarmModel>{
     @Query("SELECT * FROM FarmModel WHERE farmId=:farmId")
     abstract fun getFarmById(farmId: Int?): Single<FarmModel>
 
+    @Transaction
     @Query("SELECT * FROM FarmModel WHERE name LIKE '%' || :farmName || '%' ORDER BY name COLLATE NOCASE ASC LIMIT 10")
     abstract fun findFarmByName(farmName: String?): Flowable<List<FarmModel>>
 
