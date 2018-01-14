@@ -12,7 +12,7 @@ import android.widget.TextView
  * Created by sparow on 14/01/18.
  */
 
-class RecyclerViewSimpleTextViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class DefaultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
     var label: TextView? = null

@@ -12,6 +12,9 @@ import locavoreplatine.locafarm.viewModel.UserProfileViewModel
 import kotlinx.android.synthetic.main.activity_main_content.*
 import locavoreplatine.locafarm.model.FarmModel
 import locavoreplatine.locafarm.model.UserModel
+import android.support.v7.widget.DefaultItemAnimator
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,10 +35,11 @@ class MainActivity : AppCompatActivity() {
         viewFinderModel = ViewModelProviders.of(this, viewModelFactory).get(FinderViewModel::class.java)
 
         //RecyclerView
-        card_recycler_view.layoutManager = LinearLayoutManager(this)
-        card_recycler_view.hasFixedSize()
+        finder_recycler_view.layoutManager = LinearLayoutManager(this)
+        finder_recycler_view.hasFixedSize()
+        finder_recycler_view.itemAnimator = DefaultItemAnimator()
         // Bind adapter to recycler view object
-        card_recycler_view.adapter = FinderAdapter(getSampleArrayList())
+        finder_recycler_view.adapter = FinderAdapter(getSampleArrayList())
     }
 
     //For testing
@@ -48,7 +52,14 @@ class MainActivity : AppCompatActivity() {
             items.add(UserModel("Jon Snow", "Castle Black","mail@locafarm.com","password"))
             items.add(FarmModel("farm nora","farm01",20.0,20.0,1))
             items.add(UserModel("Tyrion Lanister", "King's Landing","mail@locafarm.com","password"))
+            items.add(UserModel("Dany Targaryen", "Valyria","mail@locafarm.com","password"))
+            items.add(UserModel("Rob Stark", "Winterfell","mail@locafarm.com","password"))
+            items.add(FarmModel("farm santa","farm01",10.0,10.0,1))
+            items.add(UserModel("Jon Snow", "Castle Black","mail@locafarm.com","password"))
+            items.add(FarmModel("farm nora","farm01",20.0,20.0,1))
+            items.add(UserModel("Tyrion Lanister", "King's Landing","mail@locafarm.com","password"))
+            items.add("Default")
 
-        return items
+        return ArrayList(items.sortedWith(compareBy({ it.javaClass.toString()})))
     }
 }

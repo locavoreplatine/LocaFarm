@@ -6,4 +6,8 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
+
+    <string name="user_badge">user</string>
+    <string name="farm_badge">farm</string>
+
 </resources>

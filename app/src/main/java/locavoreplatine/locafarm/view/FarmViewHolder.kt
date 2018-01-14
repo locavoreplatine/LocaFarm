@@ -9,7 +9,7 @@ import locavoreplatine.locafarm.model.FarmModel
  * Created by sparow on 14/01/18.
  */
 
-class FarmHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
+class FarmViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
     //2
     private var view: View = v
     private var farm: FarmModel? = null

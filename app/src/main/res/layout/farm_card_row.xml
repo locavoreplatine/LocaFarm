@@ -12,6 +12,16 @@
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/farm_badge"
+            android:textColor="#FFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:background="@drawable/badge_circle_green"/>
+
         <TextView
             android:id="@+id/farm_name"
             android:layout_marginTop="10dp"
@@ -20,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold" />
+
         <!--<TextView-->
             <!--android:id="@+id/tv_version"-->
             <!--android:layout_width="wrap_content"-->

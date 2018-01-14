@@ -9,7 +9,7 @@ import locavoreplatine.locafarm.model.UserModel
  * Created by sparow on 14/01/18.
  */
 
-class UserHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
+class UserViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
     //2
     private var view: View = v
     private var user: UserModel? = null
