@@ -4,23 +4,24 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import kotlinx.android.synthetic.main.user_card_row.view.*
 import locavoreplatine.locafarm.model.UserModel
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 
 /**
  * Created by sparow on 14/01/18.
  */
 
-class UserViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
-    //2
+class UserViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener, AnkoLogger {
+
     private var view: View = v
     private var user: UserModel? = null
 
-    //3
     init {
         v.setOnClickListener(this)
     }
 
-    //4
     override fun onClick(v: View) {
+        info(USER_KEY)
 //            val context = itemView.context
 //            val showUserIntent = Intent(context, UserActivity::class.java)
 //            showUserIntent.putExtra(PHOTO_KEY, user)
@@ -28,12 +29,10 @@ class UserViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener
     }
 
     fun bindUser(user: UserModel) {
-
         view.user_name.text = user.firstName
     }
 
     companion object {
-        //5
         private val USER_KEY = "USER"
     }
 }

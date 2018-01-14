@@ -11,7 +11,7 @@ import locavoreplatine.locauser.view.UserViewHolder
 /**
  * Created by sparow on 14/01/18.
  */
-class FinderAdapter(private val items:  ArrayList<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FinderRecyclerViewAdapter(private val items:  ArrayList<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
 //    // The items to display in your RecyclerView

@@ -1,6 +1,7 @@
 package locavoreplatine.locafarm.database
 
 import android.arch.persistence.room.*
+import android.arch.persistence.room.OnConflictStrategy.REPLACE
 import io.reactivex.Flowable
 import io.reactivex.Single
 import locavoreplatine.locafarm.model.FarmModel
