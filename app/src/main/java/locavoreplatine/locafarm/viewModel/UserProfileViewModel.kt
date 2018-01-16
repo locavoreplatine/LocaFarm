@@ -1,31 +1,38 @@
 package locavoreplatine.locafarm.viewModel
 
-import android.arch.lifecycle.AndroidViewModel
 import android.app.Application
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.AndroidViewModel
+import android.util.Log
 import locavoreplatine.locafarm.database.AppDatabase
 import locavoreplatine.locafarm.model.UserModel
 import org.jetbrains.anko.doAsync
 
 class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
 
-    var userDao = AppDatabase.getInstance(application).userDao()
+    private var userDao = AppDatabase.getInstance(application).userDao()
 
-    var user: MutableLiveData<UserModel> = MutableLiveData()
+    private lateinit var user: UserModel
 
     fun setUser(id: Int) {
+//        doAsync {
+//            user=userDao.getUserById(id).blockingGet()
+//        }
         doAsync {
-            user.postValue(userDao.getUserById(id).blockingGet())
+            val t = userDao.all.blockingGet().size
+            Log.e("setuser","$t")
+            user=userDao.findUserByName("Rob Stark").blockingFirst().get(0)
         }
     }
 
-    fun getUser():LiveData<UserModel>{
+    fun getUser():UserModel{
+        while (!::user.isInitialized){
+
+        }
         return user
     }
 
     fun deleteUser(){
-        userDao.delete(user.value!!)
+        userDao.delete(user)
     }
 
 }

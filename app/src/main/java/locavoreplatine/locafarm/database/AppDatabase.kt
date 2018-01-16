@@ -32,7 +32,19 @@ abstract class AppDatabase : RoomDatabase() {
         fun getInstance(context: Context): AppDatabase {
             if (db == null) {
                 db = if (TEST_MODE) {
-                    Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).allowMainThreadQueries().build()
+                    Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java)
+                            .addCallback(object : Callback() {
+                                override fun onCreate(db: SupportSQLiteDatabase) {
+                                    super.onCreate(db)
+                                    doAsync {
+                                        getInstance(context).run {
+                                            farmDao().insert(*PopulateDatabase.getSampleFarms())
+                                            userDao().insert(*PopulateDatabase.getSampleUsers())
+                                        }
+                                    }
+                                }
+                            })
+                            .build()
                 } else {
                     Room.databaseBuilder(context, AppDatabase::class.java, databaseName)
                             .addCallback(object : Callback() {
@@ -46,8 +58,7 @@ abstract class AppDatabase : RoomDatabase() {
                                     }
                                 }
                             })
-                            .allowMainThreadQueries().
-                            build()
+                            .build()
                 }
             }
             return db!!

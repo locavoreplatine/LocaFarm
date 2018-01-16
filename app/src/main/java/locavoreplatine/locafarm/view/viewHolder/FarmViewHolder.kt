@@ -1,4 +1,4 @@
-package locavoreplatine.locafarm.view
+package locavoreplatine.locafarm.view.viewHolder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
