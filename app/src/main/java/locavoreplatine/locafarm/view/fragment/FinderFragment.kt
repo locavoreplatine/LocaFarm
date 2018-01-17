@@ -21,14 +21,16 @@ import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_finder.*
 import locavoreplatine.locafarm.R
 import locavoreplatine.locafarm.di.Injection
-import locavoreplatine.locafarm.model.UserModel
+import locavoreplatine.locafarm.model.FarmModel
 import locavoreplatine.locafarm.view.viewAdapter.FinderRecyclerViewAdapter
+import locavoreplatine.locafarm.viewModel.FarmProfileViewModel
 import locavoreplatine.locafarm.viewModel.FinderViewModel
-import locavoreplatine.locafarm.viewModel.UserProfileViewModel
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import java.util.concurrent.TimeUnit
+
+
 
 class FinderFragment : Fragment(), LifecycleOwner, AnkoLogger {
 
@@ -47,18 +49,19 @@ class FinderFragment : Fragment(), LifecycleOwner, AnkoLogger {
         viewModelFactory = Injection.provideViewModelFactory(activity!!.application)
         viewFinderModel = ViewModelProviders.of(this, viewModelFactory).get(FinderViewModel::class.java)
 
-        //RecyclerView
+        //Finder RecyclerView
         fragment_finder_recycler_view.layoutManager = LinearLayoutManager(context)
-        fragment_finder_recycler_view.hasFixedSize()
         fragment_finder_recycler_view.itemAnimator = DefaultItemAnimator()
-        fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(getSampleArrayList())
+        fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(getSearchResult())
     }
 
-    private fun getSampleArrayList(): ArrayList<Any> {
-        val viewUserModel = ViewModelProviders.of(this, viewModelFactory).get(UserProfileViewModel::class.java)
+    private fun getSearchResult(): ArrayList<Any> {
+        val viewFarmModel = ViewModelProviders.of(this, viewModelFactory).get(FarmProfileViewModel::class.java)
         val items: ArrayList<Any> = ArrayList()
-        items.addAll(viewUserModel.all())
-        info(viewUserModel.all())
+
+        items.addAll(viewFarmModel.farmDao.all.blockingGet())
+        info(viewFarmModel.farmDao.all.blockingGet())
+
         return ArrayList(items.sortedWith(compareBy({ it.javaClass.toString() })))
     }
 
@@ -70,18 +73,18 @@ class FinderFragment : Fragment(), LifecycleOwner, AnkoLogger {
                 .filter { t: String -> t.length > 1 && !(t.startsWith(' ')) }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
-                    info("new word")
+                    info("New word "+it)
                 }
                 .delay(700, TimeUnit.MILLISECONDS)
                 .observeOn(Schedulers.io())
                 .map { it ->
-                    info("finder viewModel " + it + "length " + it.length)
-                    viewFinderModel.findUsersNames(it)
+                    info("Finder ViewModel " + it + " Length " + it.length)
+                    viewFinderModel.findFarmsNames(it)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    info("show result")
-                    showResult(viewFinderModel.getUsers())
+                    info("Show result")
+                    showResult(viewFinderModel.getFarms())
                 }
     }
 
@@ -107,24 +110,26 @@ class FinderFragment : Fragment(), LifecycleOwner, AnkoLogger {
         searchView.setOnQueryChangeListener { oldQuery, newQuery ->
             //get suggestions based on newQuery
             if (!newQuery.isEmpty()) {
-                info("new query" + newQuery)
+                info("New query" + newQuery)
                 subject.onNext(newQuery)
             } else {
-                fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(getSampleArrayList())
+                fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(getSearchResult())
             }
         }
 
         return subject
     }
 
-    private fun showResult(result: LiveData<List<UserModel>>) {
+    private fun showResult(result: LiveData<List<FarmModel>>) {
 
-        result.observe(this, Observer<List<UserModel>> { users ->
-            if (users != null && users.isNotEmpty()) {
+        result.observe(this, Observer<List<FarmModel>> { farms ->
+            if (farms != null && farms.isNotEmpty()) {
                 context!!.toast(result.value!![0].toString())
                 val itemsArray: ArrayList<Any> = ArrayList()
                 itemsArray.addAll(result.value!!.sortedWith(compareBy({ it.javaClass.toString() })))
                 fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(itemsArray)
+            }else{
+                context!!.toast("No result found !!!")
             }
         })
     }

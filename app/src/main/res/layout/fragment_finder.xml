@@ -17,7 +17,7 @@
         app:floatingSearch_searchHint="Search..."
         app:floatingSearch_suggestionsListAnimDuration="250"
         app:floatingSearch_showSearchKey="false"
-        app:floatingSearch_leftActionMode="showHamburger"
+        app:floatingSearch_leftActionMode="noLeftAction"
         app:floatingSearch_menu="@menu/main"
         app:floatingSearch_close_search_on_keyboard_dismiss="true"/>
 

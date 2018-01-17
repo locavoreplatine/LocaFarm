@@ -26,6 +26,8 @@ class ViewModelFactory(private val application: Application): ViewModelProvider.
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(UserProfileViewModel::class.java)) {
             return UserProfileViewModel(application = application) as T
+        }else if (modelClass.isAssignableFrom(FarmProfileViewModel::class.java)) {
+            return FarmProfileViewModel(application = application) as T
         }else if (modelClass.isAssignableFrom(FinderViewModel::class.java)) {
             return FinderViewModel(application = application) as T
         }
