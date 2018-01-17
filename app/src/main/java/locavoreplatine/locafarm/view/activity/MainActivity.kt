@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 //        AppDatabase.TEST_MODE=true
 
         val fragment = FinderFragment()
-        replaceFragment(fragment, main_activity_fragment_container.id)
+        replaceFragment(fragment, activity_main_fragment_container.id)
     }
 
 }
