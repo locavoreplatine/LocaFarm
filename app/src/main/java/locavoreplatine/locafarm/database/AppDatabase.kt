@@ -10,16 +10,19 @@ import locavoreplatine.locafarm.database.dao.FarmDao
 import locavoreplatine.locafarm.database.dao.FarmProductDao
 import locavoreplatine.locafarm.database.dao.UserDao
 import locavoreplatine.locafarm.model.FarmModel
+import locavoreplatine.locafarm.model.FarmProductMM
+import locavoreplatine.locafarm.model.ProductModel
 import locavoreplatine.locafarm.model.UserModel
 import locavoreplatine.locafarm.util.PopulateDatabase
 import org.jetbrains.anko.doAsync
 
-@Database(entities = [(UserModel::class), (FarmModel::class)], version = 1, exportSchema = false)
+@Database(entities = [(UserModel::class), (FarmModel::class), (ProductModel::class), (FarmProductMM::class)], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
     abstract fun farmDao(): FarmDao
+    abstract fun farmProductDao() : FarmProductDao
 
     companion object {
 
