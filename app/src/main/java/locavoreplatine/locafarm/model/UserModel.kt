@@ -11,5 +11,5 @@ data class UserModel(
         var password : String
 ){
     @PrimaryKey(autoGenerate = true)
-    var userId = 0
+    var userId :Long = 0
 }

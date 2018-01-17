@@ -1,10 +1,10 @@
-package locavoreplatine.locafarm.database
+package locavoreplatine.locafarm.database.dao
 
 
 import android.arch.persistence.room.*
-import android.arch.persistence.room.OnConflictStrategy.REPLACE
 import io.reactivex.Flowable
 import io.reactivex.Single
+import locavoreplatine.locafarm.database.dao.BaseDao
 import locavoreplatine.locafarm.model.UserModel
 
 @Dao

@@ -1,13 +1,13 @@
-package locavoreplatine.locafarm.database
+package locavoreplatine.locafarm.database.dao
 
 import android.arch.persistence.room.*
-import android.arch.persistence.room.OnConflictStrategy.REPLACE
 import io.reactivex.Flowable
 import io.reactivex.Single
+import locavoreplatine.locafarm.database.dao.BaseDao
 import locavoreplatine.locafarm.model.FarmModel
 
 @Dao
-abstract class FarmDao: BaseDao<FarmModel>{
+abstract class FarmDao: BaseDao<FarmModel> {
     @get:Query("SELECT * FROM FarmModel")
     abstract val all: Single<List<FarmModel>>
 

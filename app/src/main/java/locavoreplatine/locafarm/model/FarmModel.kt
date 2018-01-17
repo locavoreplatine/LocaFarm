@@ -6,14 +6,14 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity
 data class FarmModel(
-        val name : String,
-        val description : String?,
-        val Latitude : Double,
-        val Longitude : Double,
-        val isBio : Int
-//        @Ignore val products: List<String>, //TODO change list type and make many to many table
-//        @Ignore val commentaries: List<String> //TODO change list type and make many to many table
+        var name : String,
+        var description : String?,
+        var Latitude : Double,
+        var Longitude : Double,
+        var isBio : Int
+//        @Ignore var products: List<String>, //TODO change list type and make many to many table
+//        @Ignore var commentaries: List<String> //TODO change list type and make many to many table
 ){
     @PrimaryKey(autoGenerate = true)
-    var farmId = 0
+    var farmId :Long = 0
 }

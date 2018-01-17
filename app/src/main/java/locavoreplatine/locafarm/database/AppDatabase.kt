@@ -6,6 +6,9 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import android.content.Context
+import locavoreplatine.locafarm.database.dao.FarmDao
+import locavoreplatine.locafarm.database.dao.FarmProductDao
+import locavoreplatine.locafarm.database.dao.UserDao
 import locavoreplatine.locafarm.model.FarmModel
 import locavoreplatine.locafarm.model.UserModel
 import locavoreplatine.locafarm.util.PopulateDatabase
@@ -21,13 +24,9 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
 
         var TEST_MODE = true
-        private val databaseName = "locafarm-database"
+        private const val databaseName = "locafarm-database"
 
         private var db: AppDatabase? = null
-
-
-        @Volatile private var INSTANCE: AppDatabase? = null
-
 
         fun getInstance(context: Context): AppDatabase {
             if (db == null) {
