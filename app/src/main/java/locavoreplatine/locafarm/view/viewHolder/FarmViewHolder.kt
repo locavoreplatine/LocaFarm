@@ -2,7 +2,7 @@ package locavoreplatine.locafarm.view.viewHolder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import kotlinx.android.synthetic.main.farm_card_row.view.*
+import kotlinx.android.synthetic.main.fragment_finder_card_row_farm.view.*
 import locavoreplatine.locafarm.model.FarmModel
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info

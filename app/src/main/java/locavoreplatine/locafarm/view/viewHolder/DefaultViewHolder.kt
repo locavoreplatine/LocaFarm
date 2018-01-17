@@ -2,8 +2,6 @@ package locavoreplatine.locafarm.view.viewHolder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import kotlinx.android.synthetic.main.farm_card_row.view.*
-import locavoreplatine.locafarm.model.FarmModel
 import android.widget.TextView
 
 

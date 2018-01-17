@@ -2,7 +2,7 @@ package locavoreplatine.locauser.view
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import kotlinx.android.synthetic.main.user_card_row.view.*
+import kotlinx.android.synthetic.main.fragment_finder_card_row_user.view.*
 import locavoreplatine.locafarm.model.UserModel
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info

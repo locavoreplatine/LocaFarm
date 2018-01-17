@@ -12,6 +12,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     private var userDao = AppDatabase.getInstance(application).userDao()
 
     private lateinit var user: UserModel
+    private lateinit var allUser: List<UserModel>
 
     fun setUser(id: Int) {
 //        doAsync {
@@ -33,6 +34,16 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
 
     fun deleteUser(){
         userDao.delete(user)
+    }
+
+    fun all():List<UserModel>{
+        doAsync {
+            allUser = userDao.all.blockingGet()
+        }
+        while (!::allUser.isInitialized){
+
+        }
+        return allUser
     }
 
 }

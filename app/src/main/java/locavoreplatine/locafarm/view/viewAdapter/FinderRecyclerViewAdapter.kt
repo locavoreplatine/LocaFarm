@@ -29,11 +29,11 @@ class FinderRecyclerViewAdapter(private val items:  ArrayList<Any>) : RecyclerVi
 
         when (viewType) {
             USER -> {
-                val v1 = inflater.inflate(R.layout.user_card_row, viewGroup, false)
+                val v1 = inflater.inflate(R.layout.fragment_finder_card_row_user, viewGroup, false)
                 viewHolder = UserViewHolder(v1)
             }
             FARM -> {
-                val v2 = inflater.inflate(R.layout.farm_card_row, viewGroup, false)
+                val v2 = inflater.inflate(R.layout.fragment_finder_card_row_farm, viewGroup, false)
                 viewHolder = FarmViewHolder(v2)
             }
             else -> {
