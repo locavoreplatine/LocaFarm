@@ -20,8 +20,8 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
 
-        var TEST_MODE = false
-        private val databaseName = "sensors-database"
+        var TEST_MODE = true
+        private val databaseName = "locafarm-database"
 
         private var db: AppDatabase? = null
 
@@ -44,6 +44,8 @@ abstract class AppDatabase : RoomDatabase() {
                                     }
                                 }
                             })
+                            .fallbackToDestructiveMigration()
+                            .allowMainThreadQueries()
                             .build()
                 } else {
                     Room.databaseBuilder(context, AppDatabase::class.java, databaseName)
