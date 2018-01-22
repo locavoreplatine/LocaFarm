@@ -15,13 +15,11 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     private lateinit var allUser: List<UserModel>
 
     fun setUser(id: Int) {
-//        doAsync {
-//            user=userDao.getUserById(id).blockingGet()
-//        }
         doAsync {
-            val t = userDao.all.blockingGet().size
+            val t = userDao.all().blockingGet().size
             Log.e("setuser","$t")
-            user=userDao.findUserByName("Rob Stark").blockingFirst().get(0)
+            //user= userDao.findUserByName("Rob Stark").blockingFirst()[0]
+            user = userDao.getUserById(id).blockingGet()
         }
     }
 
@@ -38,7 +36,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
 
     fun all():List<UserModel>{
         doAsync {
-            allUser = userDao.all.blockingGet()
+            allUser = userDao.all().blockingGet()
         }
         while (!::allUser.isInitialized){
 

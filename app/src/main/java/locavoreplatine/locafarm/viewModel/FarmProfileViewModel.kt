@@ -10,22 +10,38 @@ import org.jetbrains.anko.doAsync
 
 class FarmProfileViewModel(application: Application) : AndroidViewModel(application) {
 
-    var farmDao = AppDatabase.getInstance(application).farmDao()
+    private var farmDao = AppDatabase.getInstance(application).farmDao()
 
-    var farm: MutableLiveData<FarmModel> = MutableLiveData()
+    private lateinit var farm: FarmModel
+    private lateinit var allFarm: List<FarmModel>
 
     fun setFarm(id: Int) {
         doAsync {
-            farm.postValue(farmDao.getFarmById(id).blockingGet())
+            //user= userDao.findUserByName("Rob Stark").blockingFirst()[0]
+            farm = farmDao.findFarmByName("farm nora").blockingFirst()[0]
+            //farm = farmDao.getFarmById(id).blockingGet()
         }
     }
 
-    fun getFarm():LiveData<FarmModel>{
+    fun getFarm():FarmModel{
+        while (!::farm.isInitialized){
+
+        }
         return farm
     }
 
     fun deleteFarm(){
-        farmDao.delete(farm.value!!)
+        farmDao.delete(farm)
+    }
+
+    fun all(): List<FarmModel> {
+        doAsync {
+            allFarm = farmDao.all().blockingGet()
+        }
+        while (!::allFarm.isInitialized){
+
+        }
+        return allFarm
     }
 
 }

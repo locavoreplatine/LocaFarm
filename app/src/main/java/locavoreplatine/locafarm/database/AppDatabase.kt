@@ -8,12 +8,14 @@ import android.arch.persistence.room.TypeConverters
 import android.content.Context
 import locavoreplatine.locafarm.database.dao.FarmDao
 import locavoreplatine.locafarm.database.dao.FarmProductDao
+import locavoreplatine.locafarm.database.dao.ProductDao
 import locavoreplatine.locafarm.database.dao.UserDao
 import locavoreplatine.locafarm.model.FarmModel
 import locavoreplatine.locafarm.model.FarmProductMM
 import locavoreplatine.locafarm.model.ProductModel
 import locavoreplatine.locafarm.model.UserModel
 import locavoreplatine.locafarm.util.PopulateDatabase
+import locavoreplatine.locafarm.util.random
 import org.jetbrains.anko.doAsync
 
 @Database(entities = [(UserModel::class), (FarmModel::class), (ProductModel::class), (FarmProductMM::class)], version = 1, exportSchema = false)
@@ -22,6 +24,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
     abstract fun farmDao(): FarmDao
+    abstract fun productDao(): ProductDao
     abstract fun farmProductDao() : FarmProductDao
 
     companion object {
@@ -42,6 +45,21 @@ abstract class AppDatabase : RoomDatabase() {
                                         getInstance(context).run {
                                             farmDao().insert(*PopulateDatabase.getSampleFarms())
                                             userDao().insert(*PopulateDatabase.getSampleUsers())
+                                            productDao().insert(*PopulateDatabase.getSampleProduct())
+                                            val farmList = farmDao().all().blockingGet()
+                                            val productList = productDao().all().blockingGet()
+
+                                            farmList.forEach {
+                                                val randomVal1 = (0..(productList.size-1)).random()
+                                                val randomVal2 = (0..(productList.size-1)).random()
+                                                var tmpMM = FarmProductMM(it.farmId,productList[randomVal1].productId)
+                                                farmProductDao().insert(tmpMM)
+                                                if(randomVal1!=randomVal2){
+                                                    tmpMM = FarmProductMM(it.farmId,productList[randomVal2].productId)
+                                                    farmProductDao().insert(tmpMM)
+                                                }
+                                            }
+
                                         }
                                     }
                                 }

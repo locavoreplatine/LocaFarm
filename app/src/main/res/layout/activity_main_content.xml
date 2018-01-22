@@ -11,6 +11,5 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
     </LinearLayout>
-    
 
 </android.support.constraint.ConstraintLayout>

@@ -8,8 +8,8 @@ import locavoreplatine.locafarm.model.FarmModel
 
 @Dao
 abstract class FarmDao: BaseDao<FarmModel> {
-    @get:Query("SELECT * FROM FarmModel")
-    abstract val all: Single<List<FarmModel>>
+    @Query("SELECT * FROM FarmModel")
+    abstract fun all(): Single<List<FarmModel>>
 
     @Transaction
     @Query("SELECT * FROM FarmModel WHERE farmId IN (:farmIds)")

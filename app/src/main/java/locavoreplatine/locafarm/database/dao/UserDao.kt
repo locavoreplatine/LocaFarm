@@ -9,8 +9,8 @@ import locavoreplatine.locafarm.model.UserModel
 
 @Dao
 abstract class UserDao: BaseDao<UserModel> {
-    @get:Query("SELECT * FROM UserModel")
-    abstract val all: Single<List<UserModel>>
+    @Query("SELECT * FROM UserModel")
+    abstract fun all(): Single<List<UserModel>>
 
     @Transaction
     @Query("SELECT * FROM UserModel WHERE userId IN (:userIds)")

@@ -1,6 +1,7 @@
 package locavoreplatine.locafarm.util
 
 import locavoreplatine.locafarm.model.FarmModel
+import locavoreplatine.locafarm.model.ProductModel
 import locavoreplatine.locafarm.model.UserModel
 
 /**
@@ -35,6 +36,15 @@ class PopulateDatabase {
             FarmModel("farm bouacem","farm06",10.0,10.0,0),
             FarmModel("farm razouk","farm07",20.0,20.0,1),
             FarmModel("farm damien","farm08",10.0,10.0,0))
+        }
+
+        fun getSampleProduct(): Array<ProductModel> {
+            return arrayOf(
+                    ProductModel("miel"),
+                    ProductModel("oeuf"),
+                    ProductModel("lait"),
+                    ProductModel("fromage")
+            )
         }
     }
 }

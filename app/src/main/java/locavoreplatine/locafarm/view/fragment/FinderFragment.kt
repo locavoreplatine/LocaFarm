@@ -59,8 +59,8 @@ class FinderFragment : Fragment(), LifecycleOwner, AnkoLogger {
         val viewFarmModel = ViewModelProviders.of(this, viewModelFactory).get(FarmProfileViewModel::class.java)
         val items: ArrayList<Any> = ArrayList()
 
-        items.addAll(viewFarmModel.farmDao.all.blockingGet())
-        info(viewFarmModel.farmDao.all.blockingGet())
+        items.addAll(viewFarmModel.all())
+        info(viewFarmModel.all())
 
         return ArrayList(items.sortedWith(compareBy({ it.javaClass.toString() })))
     }
