@@ -24,9 +24,20 @@ android {
         }
     }
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        buildTypes {
+
+            debug {
+                Properties properties = new Properties()
+                properties.load(project.rootProject.file('local.properties').newDataInputStream())
+                resValue "string", "google_map_api_key", '"'+properties.getProperty('googlemapapikey')+'"'
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+
         }
     }
 
@@ -44,6 +55,7 @@ project.ext {
     constraintLayout = "1.0.2"
     mvvm = "1.0.0"
     anko_version = "0.10.3"
+    maps = "11.8.0"
 }
 
 dependencies {
@@ -81,11 +93,15 @@ dependencies {
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
     implementation "org.jetbrains.anko:anko-design:$anko_version"
 
-    //RxJava
+    // RxJava
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
 
-    //SearchView
+    // SearchView
     implementation 'com.github.arimorty:floatingsearchview:2.1.1'
+
+    // Google Maps
+    implementation "com.google.android.gms:play-services-maps:$maps"
+    implementation "com.google.android.gms:play-services-location:$maps"
 }

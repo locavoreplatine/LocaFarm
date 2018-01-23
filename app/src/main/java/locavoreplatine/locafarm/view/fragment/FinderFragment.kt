@@ -13,6 +13,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arlib.floatingsearchview.FloatingSearchView
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -32,13 +36,15 @@ import java.util.concurrent.TimeUnit
 
 
 
-class FinderFragment : Fragment(), LifecycleOwner, AnkoLogger {
+class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger {
 
     private lateinit var viewFinderModel: FinderViewModel
 
     private lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var disposable: Disposable
+
+    private val MAPVIEW_BUNDLE_KEY = "MapViewBundleKey"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_finder, container, false)
@@ -53,6 +59,19 @@ class FinderFragment : Fragment(), LifecycleOwner, AnkoLogger {
         fragment_finder_recycler_view.layoutManager = LinearLayoutManager(context)
         fragment_finder_recycler_view.itemAnimator = DefaultItemAnimator()
         fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(getSearchResult())
+
+
+        //MapsView
+        // *** IMPORTANT ***
+        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
+        // objects or sub-Bundles.
+        var mapViewBundle: Bundle? = null
+
+        if (savedInstanceState != null) {
+            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)
+        }
+        mapview.onCreate(mapViewBundle)
+        mapview.getMapAsync(this)
     }
 
     private fun getSearchResult(): ArrayList<Any> {
@@ -86,6 +105,7 @@ class FinderFragment : Fragment(), LifecycleOwner, AnkoLogger {
                     info("Show result")
                     showResult(viewFinderModel.getFarms())
                 }
+        mapview.onStart()
     }
 
     override fun onStop() {
@@ -93,7 +113,7 @@ class FinderFragment : Fragment(), LifecycleOwner, AnkoLogger {
         if (!disposable.isDisposed) {
             disposable.dispose()
         }
-
+        mapview.onStop()
     }
 
     override fun onDestroy() {
@@ -101,6 +121,7 @@ class FinderFragment : Fragment(), LifecycleOwner, AnkoLogger {
         if (!disposable.isDisposed) {
             disposable.dispose()
         }
+        mapview.onDestroy()
     }
 
     private fun rxSearchView(searchView: FloatingSearchView): Observable<String> {
@@ -133,5 +154,22 @@ class FinderFragment : Fragment(), LifecycleOwner, AnkoLogger {
             }
         })
     }
+
+    override fun onMapReady(map: GoogleMap) {
+        map.addMarker(MarkerOptions().position(LatLng(0.0, 0.0)).title("Marker"))
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        var mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY)
+        if (mapViewBundle == null) {
+            mapViewBundle = Bundle()
+            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle)
+        }
+
+        mapview.onSaveInstanceState(mapViewBundle)
+    }
+
 
 }
