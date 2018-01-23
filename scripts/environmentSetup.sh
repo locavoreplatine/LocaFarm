@@ -3,7 +3,7 @@
 function copyEnvVarsToLocalProperties {
     LOCAL_PROPERTIES=$HOME"/local.properties"
     export LOCAL_PROPERTIES
-    echo "local Properties should exist at $LOCAL_PROPERTIES"
+    echo "Local Properties should exist at $LOCAL_PROPERTIES"
 
     if [ ! -f "$LOCAL_PROPERTIES" ]; then
         echo "Gradle local does not exist"
@@ -12,6 +12,6 @@ function copyEnvVarsToLocalProperties {
         touch $LOCAL_PROPERTIES
 
         echo "Writing TEST_API_KEY to local.properties..."
-        echo "googlemapapikey=$GOOGLE_MAP_API_KEY" >> $GRADLE_PROPERTIES
+        echo "googlemapapikey=$GOOGLE_MAP_API_KEY" >> $LOCAL_PROPERTIES
     fi
 }
