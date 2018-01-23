@@ -30,5 +30,7 @@ class FarmProfileFragment : Fragment(), LifecycleOwner{
         val horizontalLayoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
         fragment_farm_recycler_view.layoutManager=horizontalLayoutManager
         fragment_farm_recycler_view.adapter=recyclerViewAdapter
+        fragment_farm_image.setImageResource(R.drawable.cover)
+
     }
 }

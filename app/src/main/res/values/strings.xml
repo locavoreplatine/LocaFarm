@@ -12,5 +12,6 @@
     <string name="farm_badge">farm</string>
     <string name="farm_img">farm_img</string>
     <string name="farm_item_img">farm_item_img</string>
+    <string name="fragment_farm_navigation_button">fragment_farm_navigation_button</string>
 
 </resources>
