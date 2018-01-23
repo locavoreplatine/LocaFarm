@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="100dp"
+    android:layout_height="match_parent"
+    android:layout_marginTop="5dp">
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/ic_launcher"
+        android:layout_gravity="center"
+        android:contentDescription="@string/farm_item_img" />
+    <TextView
+        android:textColor="#000"
+        android:textSize="12sp"
+        android:layout_gravity="center"
+        android:padding="5dp"
+        android:id="@+id/txtView"
+        android:textAlignment="center"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content" />
+</LinearLayout>

@@ -10,5 +10,7 @@
 
     <string name="user_badge">user</string>
     <string name="farm_badge">farm</string>
+    <string name="farm_img">farm_img</string>
+    <string name="farm_item_img">farm_item_img</string>
 
 </resources>

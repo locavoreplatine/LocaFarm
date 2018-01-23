@@ -28,14 +28,14 @@ class PopulateDatabase {
         @JvmStatic
         fun getSampleFarms(): Array<FarmModel> {
             return arrayOf(
-            FarmModel("farm nora","farm01",20.0,20.0,1),
-            FarmModel("farm santa","farm02",10.0,10.0,0),
-            FarmModel("farm celia","farm03",20.0,20.0,1),
-            FarmModel("farm moncef","farm04",10.0,10.0,0),
-            FarmModel("farm violetta","farm05",20.0,20.0,1),
-            FarmModel("farm bouacem","farm06",10.0,10.0,0),
-            FarmModel("farm razouk","farm07",20.0,20.0,1),
-            FarmModel("farm damien","farm08",10.0,10.0,0))
+            FarmModel("farm nora","farm01",20.0,20.0,1,"nora","1"),
+            FarmModel("farm santa","farm02",10.0,10.0,0,"santa","2"),
+            FarmModel("farm celia","farm03",20.0,20.0,1,"celia","3"),
+            FarmModel("farm moncef","farm04",10.0,10.0,0,"moncef","4"),
+            FarmModel("farm violetta","farm05",20.0,20.0,1,"violetta","5"),
+            FarmModel("farm bouacem","farm06",10.0,10.0,0,"bouacem","6"),
+            FarmModel("farm razouk","farm07",20.0,20.0,1,"razouk","7"),
+            FarmModel("farm damien","farm08",10.0,10.0,0,"damien","8"))
         }
 
         fun getSampleProduct(): Array<ProductModel> {
@@ -43,7 +43,33 @@ class PopulateDatabase {
                     ProductModel("miel"),
                     ProductModel("oeuf"),
                     ProductModel("lait"),
-                    ProductModel("fromage")
+                    ProductModel("fromage de chèvre"),
+                    ProductModel("salade"),
+                    ProductModel("viande de mouton"),
+                    ProductModel("saumon"),
+                    ProductModel("viande de boeuf"),
+                    ProductModel("fromage de vache"),
+                    ProductModel("fraise"),
+                    ProductModel("framboise"),
+                    ProductModel("cassis"),
+                    ProductModel("myrtille"),
+                    ProductModel("radis"),
+                    ProductModel("beure"),
+                    ProductModel("asperge"),
+                    ProductModel("chataigne"),
+                    ProductModel("maron"),
+                    ProductModel("pomme"),
+                    ProductModel("poire"),
+                    ProductModel("viande de porc"),
+                    ProductModel("courgette"),
+                    ProductModel("bar"),
+                    ProductModel("vin"),
+                    ProductModel("eau de vie"),
+                    ProductModel("jus de pomme"),
+                    ProductModel("jus d'ananas"),
+                    ProductModel("jus d'orange"),
+                    ProductModel("orange"),
+                    ProductModel("mandarine")
             )
         }
     }

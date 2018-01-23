@@ -1,22 +1,19 @@
 package locavoreplatine.locafarm.view.fragment
 
 import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_user_profile.*
+import kotlinx.android.synthetic.main.fragment_user.*
 import locavoreplatine.locafarm.R
-import locavoreplatine.locafarm.model.UserModel
 import locavoreplatine.locafarm.viewModel.UserProfileViewModel
 
 class UserProfileFragment : Fragment(), LifecycleOwner{
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_user_profile,container,false)
+        return inflater.inflate(R.layout.fragment_user,container,false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

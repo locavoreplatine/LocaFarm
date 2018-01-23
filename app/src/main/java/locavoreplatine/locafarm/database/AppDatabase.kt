@@ -50,16 +50,12 @@ abstract class AppDatabase : RoomDatabase() {
                                             val productList = productDao().all().blockingGet()
 
                                             farmList.forEach {
-                                                val randomVal1 = (0..(productList.size-1)).random()
-                                                val randomVal2 = (0..(productList.size-1)).random()
-                                                var tmpMM = FarmProductMM(it.farmId,productList[randomVal1].productId)
-                                                farmProductDao().insert(tmpMM)
-                                                if(randomVal1!=randomVal2){
-                                                    tmpMM = FarmProductMM(it.farmId,productList[randomVal2].productId)
+                                                for (i in (0..10)){
+                                                    val randomVal = (0..(productList.size-1)).random()
+                                                    val tmpMM = FarmProductMM(it.farmId,productList[randomVal].productId)
                                                     farmProductDao().insert(tmpMM)
                                                 }
                                             }
-
                                         }
                                     }
                                 }
