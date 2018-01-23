@@ -1,4 +1,7 @@
 version: 2
+dependencies:
+  pre:
+    - source ${HOME}/scripts/environmentSetup.sh && copyEnvVarsToLocalProperties
 jobs:
   build:
     working_directory: ~/locafarm
