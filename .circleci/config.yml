@@ -10,8 +10,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Add API'S keys
-          command: source ${HOME}/scripts/environmentSetup.sh && copyEnvVarsToLocalProperties
+          name: Create local.properties
+          command: source ~/locafarm/scripts/environmentSetup.sh && copyEnvVarsToLocalProperties
+      - run:
+          name: Display all
+          command: ls ~/locafarm/
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
@@ -23,7 +26,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Run Tests
-          command: ./gradlew lint test
+          command: ./gradlew clean build lint test
       - store_artifacts:
           path: app/build/reports
           destination: reports
@@ -31,7 +34,7 @@ jobs:
           path: app/build/test-results
       - run:
           name: Run Build
-          command: ./gradlew assembleDebug
+          command: ./gradlew clean assembleDebugUnitTest
       - store_artifacts:
           path: app/build/outputs/apk/debug/
           destination: artifact-file

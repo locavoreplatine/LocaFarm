@@ -29,11 +29,16 @@ android {
             debug {
                 Properties properties = new Properties()
                 properties.load(project.rootProject.file('local.properties').newDataInputStream())
-                resValue "string", "google_map_api_key", '"'+properties.getProperty('googlemapapikey')+'"'
+                manifestPlaceholders = [ google_map_api_key:'"'+properties.getProperty('googlemapapikey')+'"']
+
                 proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             }
 
             release {
+                Properties properties = new Properties()
+                properties.load(project.rootProject.file('local.properties').newDataInputStream())
+                manifestPlaceholders = [ google_map_api_key:'"'+properties.getProperty('googlemapapikey')+'"']
+
                 minifyEnabled false
                 proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             }

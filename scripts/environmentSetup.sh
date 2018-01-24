@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function copyEnvVarsToLocalProperties {
-    LOCAL_PROPERTIES=$HOME"/local.properties"
+    LOCAL_PROPERTIES=$HOME"/locafarm/local.properties"
     export LOCAL_PROPERTIES
     echo "Local Properties should exist at $LOCAL_PROPERTIES"
 
@@ -11,7 +11,10 @@ function copyEnvVarsToLocalProperties {
         echo "Creating local Properties file..."
         touch $LOCAL_PROPERTIES
 
-        echo "Writing TEST_API_KEY to local.properties..."
-        echo "googlemapapikey=$GOOGLE_MAP_API_KEY" >> $LOCAL_PROPERTIES
+        echo "Writing GOOGLE_MAP_API_KEY to local.properties..."
+        echo "googlemapapikey=$GOOGLE_MAP_API_KEY" > $LOCAL_PROPERTIES
+	
+	cat $LOCAL_PROPERTIES
+
     fi
 }
