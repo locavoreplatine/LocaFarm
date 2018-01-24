@@ -10,11 +10,11 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Show Folder files and directories
+          command: ls ~/locafarm/
+      - run:
           name: Create local.properties
           command: source ~/locafarm/scripts/environmentSetup.sh && copyEnvVarsToLocalProperties
-      - run:
-          name: Display all
-          command: ls ~/locafarm/
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
@@ -26,7 +26,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Run Tests
-          command: ./gradlew assembleDebugUnitTest
+          command: ./gradlew lint test
       - store_artifacts:
           path: app/build/reports
           destination: reports
@@ -34,7 +34,7 @@ jobs:
           path: app/build/test-results
       - run:
           name: Run Build
-          command: ./gradlew clean assembleDebug
+          command: ./gradlew clean build
       - store_artifacts:
           path: app/build/outputs/apk/debug/
           destination: artifact-file
