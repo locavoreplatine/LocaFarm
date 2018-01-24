@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -22,10 +23,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import kotlinx.android.synthetic.main.activity_main_content.*
 import kotlinx.android.synthetic.main.fragment_finder.*
 import locavoreplatine.locafarm.R
 import locavoreplatine.locafarm.di.Injection
 import locavoreplatine.locafarm.model.FarmModel
+import locavoreplatine.locafarm.util.OnFarmItemClickListener
+import locavoreplatine.locafarm.util.replaceFragment
 import locavoreplatine.locafarm.view.viewAdapter.FinderRecyclerViewAdapter
 import locavoreplatine.locafarm.viewModel.FarmProfileViewModel
 import locavoreplatine.locafarm.viewModel.FinderViewModel
@@ -44,7 +48,11 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
 
     private lateinit var disposable: Disposable
 
+
     private val MAPVIEW_BUNDLE_KEY = "MapViewBundleKey"
+
+    private lateinit var onFarmItemClickListener: OnFarmItemClickListener
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_finder, container, false)
@@ -55,11 +63,21 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
         viewModelFactory = Injection.provideViewModelFactory(activity!!.application)
         viewFinderModel = ViewModelProviders.of(this, viewModelFactory).get(FinderViewModel::class.java)
 
+        onFarmItemClickListener = object : OnFarmItemClickListener {
+            override fun onItemClick(item: FarmModel) {
+                val mActivity = activity as AppCompatActivity
+                val fragment=FarmProfileFragment()
+                val bundle = Bundle()
+                bundle.putLong("id",item.farmId)
+                fragment.arguments=bundle
+                mActivity.replaceFragment(fragment,mActivity.activity_main_fragment_container.id)
+            }
+        }
+
         //Finder RecyclerView
         fragment_finder_recycler_view.layoutManager = LinearLayoutManager(context)
         fragment_finder_recycler_view.itemAnimator = DefaultItemAnimator()
-        fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(getSearchResult())
-
+        fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(getSearchResult(),onFarmItemClickListener)
 
         //MapsView
         // *** IMPORTANT ***
@@ -134,7 +152,7 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
                 info("New query" + newQuery)
                 subject.onNext(newQuery)
             } else {
-                fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(getSearchResult())
+                fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(getSearchResult(),onFarmItemClickListener)
             }
         }
 
@@ -148,7 +166,7 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
                 context!!.toast(result.value!![0].toString())
                 val itemsArray: ArrayList<Any> = ArrayList()
                 itemsArray.addAll(result.value!!.sortedWith(compareBy({ it.javaClass.toString() })))
-                fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(itemsArray)
+                fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(itemsArray,onFarmItemClickListener)
             }else{
                 context!!.toast("No result found !!!")
             }

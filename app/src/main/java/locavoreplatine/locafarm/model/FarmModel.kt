@@ -12,7 +12,9 @@ data class FarmModel(
         var Longitude : Double,
         var isBio : Int,
         var producerName: String,
-        var addr: String
+        var addr: String,
+        var rating: Int = 0,
+        var votingNumber: Int = 0
 //        @Ignore var products: List<String>, //TODO change list type and make many to many table
 //        @Ignore var commentaries: List<String> //TODO change list type and make many to many table
 ){

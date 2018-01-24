@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/customborder"
+    android:background="@drawable/fragment_farm_detail_background"
     android:layout_margin="10dp"
     android:padding="2dp">
 
@@ -14,15 +14,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:numStars="5"
+        android:theme="@style/RatingBar"
         android:stepSize="1"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fragment_farm_navigation"
         app:layout_constraintStart_toStartOf="parent"/>
     <TextView
         android:id="@+id/fragment_farm_tv_farmname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="@dimen/text_size"
+        android:text="text"
         app:layout_constraintTop_toBottomOf="@id/fragment_farm_ratingbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/fragment_farm_navigation"/>
@@ -30,7 +32,8 @@
         android:id="@+id/fragment_farm_tv_producername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="@dimen/text_size"
+        android:text="text"
         app:layout_constraintTop_toBottomOf="@id/fragment_farm_tv_farmname"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/fragment_farm_navigation"/>
@@ -40,10 +43,10 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:text="text"
         app:layout_constraintTop_toBottomOf="@id/fragment_farm_tv_producername"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/fragment_farm_navigation"
-        />
+        app:layout_constraintEnd_toStartOf="@id/fragment_farm_navigation"/>
     <ImageView
         android:id="@+id/fragment_farm_navigation"
         android:layout_width="40dp"
@@ -53,11 +56,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
     <TextView
+        android:id="@+id/fragment_farm_tv_dist"
         android:gravity="center"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:text="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_farm_ratingbar"
         app:layout_constraintBottom_toTopOf="@id/fragment_farm_navigation"/>
+    <TextView
+        android:id="@+id/fragment_farm_tv_desc"
+        android:textSize="20sp"
+        android:text="text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fragment_farm_navigation"
+        app:layout_constraintTop_toBottomOf="@id/fragment_farm_tv_addr"/>
 
 </android.support.constraint.ConstraintLayout>

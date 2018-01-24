@@ -6,6 +6,7 @@ import locavoreplatine.locafarm.R
 import locavoreplatine.locafarm.model.FarmModel
 import locavoreplatine.locafarm.model.UserModel
 import android.view.LayoutInflater
+import locavoreplatine.locafarm.util.OnFarmItemClickListener
 import locavoreplatine.locafarm.view.viewHolder.DefaultViewHolder
 import locavoreplatine.locafarm.view.viewHolder.FarmViewHolder
 import locavoreplatine.locauser.view.UserViewHolder
@@ -13,11 +14,7 @@ import locavoreplatine.locauser.view.UserViewHolder
 /**
  * Created by sparow on 14/01/18.
  */
-class FinderRecyclerViewAdapter(private val items:  List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-
-//    // The items to display in your RecyclerView
-//    private val items: List<Any>? = null
+class FinderRecyclerViewAdapter(private val items:  List<Any>, private val onFarmItemClickListener: OnFarmItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val USER = 0
     private val FARM = 1
@@ -84,7 +81,7 @@ class FinderRecyclerViewAdapter(private val items:  List<Any>) : RecyclerView.Ad
 
     private fun configureFarmViewHolder(vFarm: FarmViewHolder, position: Int) {
         val farm = items[position] as FarmModel
-        vFarm.bindFarm(farm)
+        vFarm.bindFarm(farm,onFarmItemClickListener)
     }
 
 

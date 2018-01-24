@@ -19,7 +19,7 @@ abstract class FarmDao: BaseDao<FarmModel> {
     abstract fun getFarmCount(): Int
 
     @Query("SELECT * FROM FarmModel WHERE farmId=:farmId")
-    abstract fun getFarmById(farmId: Int?): Single<FarmModel>
+    abstract fun getFarmById(farmId: Long?): Single<FarmModel>
 
     @Transaction
     @Query("SELECT * FROM FarmModel WHERE name LIKE '%' || :farmName || '%' ORDER BY name COLLATE NOCASE ASC LIMIT 10")

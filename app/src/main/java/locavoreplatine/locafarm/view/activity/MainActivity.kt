@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 //        bundle.putInt("id",0)
 //        fragment.arguments=bundle
 //        replaceFragment(fragment,activity_main_fragment_container.id)
+
         permissionCheck()
     }
 

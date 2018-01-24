@@ -20,13 +20,13 @@ class FarmProfileViewModel(application: Application) : AndroidViewModel(applicat
     private lateinit var farmProduct: List<ProductModel>
     private lateinit var allFarm: List<FarmModel>
 
-    fun setFarm(id: Int) {
+    fun setFarm(id: Long) {
         doAsync {
             Log.e("farmViewModel", "${farmDao.all().blockingGet().size}")
-            Log.e("farmViewModel", "${farmDao.findFarmByName("farm nora").blockingFirst()[0].name}")
-            farm = farmDao.findFarmByName("farm nora").blockingFirst()[0]
+            Log.e("farmViewModel", farmDao.findFarmByName("farm nora").blockingFirst()[0].name)
+//            farm = farmDao.findFarmByName("farm nora").blockingFirst()[0]
+            farm = farmDao.getFarmById(id).blockingGet()
             farmProduct = farmProductDao.productByFarm(farm.farmId)
-            //farm = farmDao.getFarmById(id).blockingGet()
         }
     }
 
