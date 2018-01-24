@@ -127,19 +127,23 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
     }
 
     override fun onStop() {
-        super.onStop()
         if (!disposable.isDisposed) {
             disposable.dispose()
         }
-        mapview.onStop()
+        if(mapview != null){
+            mapview.onStop()
+        }
+        super.onStop()
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         if (!disposable.isDisposed) {
             disposable.dispose()
         }
-        mapview.onDestroy()
+        if(mapview != null) {
+            mapview.onDestroy();
+        }
+        super.onDestroy()
     }
 
     private fun rxSearchView(searchView: FloatingSearchView): Observable<String> {
@@ -186,7 +190,9 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
             outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle)
         }
 
-        mapview.onSaveInstanceState(mapViewBundle)
+        if(mapview != null){
+            mapview.onSaveInstanceState(mapViewBundle)
+        }
     }
 
 
