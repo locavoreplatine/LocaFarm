@@ -13,8 +13,6 @@ function copyEnvVarsToLocalProperties {
 
         echo "Writing GOOGLE_MAP_API_KEY to local.properties..."
         echo "googlemapapikey=$GOOGLE_MAP_API_KEY" > $LOCAL_PROPERTIES
-	
-	cat $LOCAL_PROPERTIES
 
     fi
 }
