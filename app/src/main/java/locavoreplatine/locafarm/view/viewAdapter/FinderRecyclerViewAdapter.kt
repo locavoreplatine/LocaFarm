@@ -9,14 +9,12 @@ import android.view.LayoutInflater
 import locavoreplatine.locafarm.util.OnFarmItemClickListener
 import locavoreplatine.locafarm.view.viewHolder.DefaultViewHolder
 import locavoreplatine.locafarm.view.viewHolder.FarmViewHolder
-import locavoreplatine.locauser.view.UserViewHolder
 
 /**
  * Created by sparow on 14/01/18.
  */
 class FinderRecyclerViewAdapter(private val items:  List<Any>, private val onFarmItemClickListener: OnFarmItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val USER = 0
     private val FARM = 1
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -25,10 +23,6 @@ class FinderRecyclerViewAdapter(private val items:  List<Any>, private val onFar
         val inflater = LayoutInflater.from(viewGroup.context)
 
         when (viewType) {
-            USER -> {
-                val v1 = inflater.inflate(R.layout.fragment_finder_card_row_user, viewGroup, false)
-                viewHolder = UserViewHolder(v1)
-            }
             FARM -> {
                 val v2 = inflater.inflate(R.layout.fragment_finder_card_row_farm, viewGroup, false)
                 viewHolder = FarmViewHolder(v2)
@@ -43,10 +37,6 @@ class FinderRecyclerViewAdapter(private val items:  List<Any>, private val onFar
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         when (viewHolder.itemViewType) {
-            USER -> {
-                val vh1 = viewHolder as UserViewHolder
-                configureUserViewHolder(vh1, position)
-            }
             FARM -> {
                 val vh2 = viewHolder as FarmViewHolder
                 configureFarmViewHolder(vh2, position)
@@ -62,9 +52,7 @@ class FinderRecyclerViewAdapter(private val items:  List<Any>, private val onFar
 
 
     override fun getItemViewType(position: Int): Int {
-        if (items[position] is UserModel) {
-            return USER
-        } else if (items[position] is FarmModel) {
+        if (items[position] is FarmModel) {
             return FARM
         }
         return -1
@@ -72,11 +60,6 @@ class FinderRecyclerViewAdapter(private val items:  List<Any>, private val onFar
 
     private fun configureDefaultViewHolder(vh: DefaultViewHolder, position: Int) {
         vh.label!!.text = items[position] as CharSequence
-    }
-
-    private fun configureUserViewHolder(vUser: UserViewHolder, position: Int) {
-        val user = items[position] as UserModel
-        vUser.bindUser(user)
     }
 
     private fun configureFarmViewHolder(vFarm: FarmViewHolder, position: Int) {

@@ -28,14 +28,14 @@ class PopulateDatabase {
         @JvmStatic
         fun getSampleFarms(): Array<FarmModel> {
             return arrayOf(
-            FarmModel("farm nora","farm01",20.0,20.0,1,"nora","1"),
-            FarmModel("farm santa","farm02",10.0,10.0,0,"santa","2"),
-            FarmModel("farm celia","farm03",20.0,20.0,1,"celia","3"),
-            FarmModel("farm moncef","farm04",10.0,10.0,0,"moncef","4"),
-            FarmModel("farm violetta","farm05",20.0,20.0,1,"violetta","5"),
-            FarmModel("farm bouacem","farm06",10.0,10.0,0,"bouacem","6"),
-            FarmModel("farm razouk","farm07",20.0,20.0,1,"razouk","7"),
-            FarmModel("farm damien","farm08",10.0,10.0,0,"damien","8"))
+            FarmModel("farm nora","farm01",90.0,20.0,1,"nora","1"),
+            FarmModel("farm santa","farm02",10.0,19.0,0,"santa","2"),
+            FarmModel("farm celia","farm03",20.0,93.0,1,"celia","3"),
+            FarmModel("farm moncef","farm04",10.0,15.0,0,"moncef","4"),
+            FarmModel("farm violetta","farm05",22.0,20.0,1,"violetta","5"),
+            FarmModel("farm bouacem","farm06",58.0,17.0,0,"bouacem","6"),
+            FarmModel("farm razouk","farm07",53.0,20.0,1,"razouk","7"),
+            FarmModel("farm damien","farm08",11.0,17.0,0,"damien","8"))
         }
 
         fun getSampleProduct(): Array<ProductModel> {
