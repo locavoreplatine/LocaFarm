@@ -58,7 +58,7 @@ project.ext {
     maps = "11.4.2"
     retrofit = "2.3.0"
     constraintLayout = "1.0.2"
-    mvvm = "1.0.0"
+    mvvm = "1.1.0"
     anko_version = "0.10.3"
     maps = "11.8.0"
 }
@@ -92,7 +92,7 @@ dependencies {
     testImplementation "android.arch.persistence.room:testing:$room"
     implementation "android.arch.lifecycle:common-java8:$room"
     implementation "android.arch.persistence.room:rxjava2:$room"
-    implementation "android.arch.lifecycle:reactivestreams:$room"
+    implementation 'android.arch.lifecycle:reactivestreams:1.1.0'
 
     //anko
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
