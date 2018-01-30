@@ -6,11 +6,9 @@
         android:orderInCategory="100"
         android:title="@string/action_sort_by_name"
         app:showAsAction="never" />
-
     <item
         android:id="@+id/sort_by_distance"
         android:orderInCategory="100"
         android:title="@string/action_sort_by_distance"
         app:showAsAction="never" />
-
 </menu>

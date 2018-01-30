@@ -7,5 +7,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="search_view_inset">8dp</dimen>
     <dimen name="text_size">20sp</dimen>
+    <dimen name="footer_navbar">50dp</dimen>
 
 </resources>
