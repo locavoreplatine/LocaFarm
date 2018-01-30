@@ -13,9 +13,5 @@
         android:layout_gravity="start"
         android:contentDescription="@string/farm_img" />
     <include layout="@layout/fragment_farm_detail"/>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_farm_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
+    <include layout="@layout/fragment_farm_recycler"/>
 </LinearLayout>

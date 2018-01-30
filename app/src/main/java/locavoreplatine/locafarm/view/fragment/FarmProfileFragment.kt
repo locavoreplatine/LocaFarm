@@ -12,6 +12,11 @@ import kotlinx.android.synthetic.main.fragment_farm_detail.*
 import locavoreplatine.locafarm.R
 import locavoreplatine.locafarm.view.viewAdapter.FarmRecyclerViewAdapter
 import locavoreplatine.locafarm.viewModel.FarmProfileViewModel
+import android.content.Intent
+import android.net.Uri
+import android.support.v7.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_farm_recycler.*
+
 
 class FarmProfileFragment : Fragment(), LifecycleOwner{
 
@@ -29,11 +34,42 @@ class FarmProfileFragment : Fragment(), LifecycleOwner{
         val horizontalLayoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
         fragment_farm_recycler_view.layoutManager=horizontalLayoutManager
         fragment_farm_recycler_view.adapter=recyclerViewAdapter
-        fragment_farm_image.setImageResource(R.drawable.full_logo)
+        fragment_farm_image.setImageResource(R.drawable.cover)
         fragment_farm_ratingbar.numStars=farm.rating
         fragment_farm_tv_farmname.text=farm.name
         fragment_farm_tv_addr.text=farm.addr
         fragment_farm_tv_producername.text=farm.producerName
         fragment_farm_tv_desc.text=farm.description
+
+        fragment_farm_navigation.setOnClickListener {
+            val gmmIntentUri = Uri.parse("google.navigation:q=${farm.Latitude},${farm.Longitude}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.`package` = "com.google.android.apps.maps"
+            startActivity(mapIntent)
+        }
+
+
+        fragment_farm_recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val manager = fragment_farm_recycler_view.layoutManager as LinearLayoutManager
+                val adapter = fragment_farm_recycler_view.adapter as FarmRecyclerViewAdapter
+                val fistVisibleItem = manager.findFirstCompletelyVisibleItemPosition()
+                val lastVisibleItem = manager.findLastCompletelyVisibleItemPosition()
+                if (fistVisibleItem==0){
+                    fragment_farm_arrow_left.visibility=View.GONE
+                }
+                else {
+                    fragment_farm_arrow_left.visibility=View.VISIBLE
+                }
+                if(lastVisibleItem==adapter.itemCount-1){
+                    fragment_farm_arrow_right.visibility=View.GONE
+                }
+                else{
+                    fragment_farm_arrow_right.visibility=View.VISIBLE
+                }
+            }
+        })
+
     }
 }
