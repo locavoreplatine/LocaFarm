@@ -1,15 +1,12 @@
 package locavoreplatine.locafarm.view.fragment
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import android.arch.lifecycle.*
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +24,7 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_main_content.*
 import kotlinx.android.synthetic.main.fragment_finder.*
+import kotlinx.android.synthetic.main.fragment_finder_content_map.*
 import locavoreplatine.locafarm.R
 import locavoreplatine.locafarm.di.Injection
 import locavoreplatine.locafarm.model.FarmModel
@@ -38,14 +36,12 @@ import locavoreplatine.locafarm.viewModel.FarmProfileViewModel
 import locavoreplatine.locafarm.viewModel.FinderViewModel
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
-import org.jetbrains.anko.toast
 import java.util.concurrent.TimeUnit
-
 
 
 class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger {
 
-    private lateinit var viewFinderModel: FinderViewModel
+    private lateinit var finderViewModel: FinderViewModel
 
     private lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -62,10 +58,26 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
         return inflater.inflate(R.layout.fragment_finder, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        fragment_finder_floating_search_view.setOnFocusChangeListener(object : FloatingSearchView.OnFocusChangeListener {
+            override fun onFocus() {
+                Log.d("1", "onFocus()")
+                fragment_finder_mapview.visibility=View.GONE
+            }
+
+            override fun onFocusCleared() {
+                Log.d("1", "onFocusCleared()")
+                fragment_finder_mapview.visibility=View.VISIBLE
+            }
+        })
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModelFactory = Injection.provideViewModelFactory(activity!!.application)
-        viewFinderModel = ViewModelProviders.of(this, viewModelFactory).get(FinderViewModel::class.java)
+        finderViewModel = ViewModelProviders.of(this, viewModelFactory).get(FinderViewModel::class.java)
+
 
         onFarmItemClickListener = object : OnFarmItemClickListener {
             override fun onItemClick(item: FarmModel) {
@@ -92,8 +104,8 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)
         }
-        mapview.onCreate(mapViewBundle)
-        mapview.getMapAsync(this)
+        fragment_finder_mapview.onCreate(mapViewBundle)
+        fragment_finder_mapview.getMapAsync(this)
     }
 
     private fun getSearchResult(): List<FarmModel> {
@@ -117,22 +129,22 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
                 .observeOn(Schedulers.io())
                 .map { it ->
                     info("Finder ViewModel " + it + " Length " + it.length)
-                    viewFinderModel.findFarmsNames(it)
+                    finderViewModel.findFarmsNames(it)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     info("Show result")
-                    showResult(viewFinderModel.getFarms())
+                    showResult(finderViewModel.getFarms())
                 }
-        mapview.onStart()
+        fragment_finder_mapview.onStart()
     }
 
     override fun onStop() {
         if (!disposable.isDisposed) {
             disposable.dispose()
         }
-        if(mapview != null){
-            mapview.onStop()
+        if(fragment_finder_mapview != null){
+            fragment_finder_mapview.onStop()
         }
         super.onStop()
     }
@@ -141,8 +153,8 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
         if (!disposable.isDisposed) {
             disposable.dispose()
         }
-        if(mapview != null) {
-            mapview.onDestroy()
+        if(fragment_finder_mapview != null) {
+            fragment_finder_mapview.onDestroy()
         }
         super.onDestroy()
     }
@@ -211,8 +223,8 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
             outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle)
         }
 
-        if(mapview != null){
-            mapview.onSaveInstanceState(mapViewBundle)
+        if(fragment_finder_mapview != null){
+            fragment_finder_mapview.onSaveInstanceState(mapViewBundle)
         }
     }
 

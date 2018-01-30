@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.gms.maps.MapView android:id="@+id/fragment_finder_mapview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.arlib.floatingsearchview.FloatingSearchView
+        android:id="@+id/fragment_finder_floating_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+
+        app:floatingSearch_backgroundColor="@color/appBrown"
+        app:floatingSearch_menuItemIconColor="@color/appLightBrown"
+        app:floatingSearch_actionMenuOverflowColor="@color/appLightBrown"
+        app:floatingSearch_leftActionColor="@color/appLightBrown"
+        app:floatingSearch_viewTextColor="@color/appLightBrown"
+        app:floatingSearch_hintTextColor="@color/appLightBrown"
+        app:floatingSearch_viewSearchInputTextColor="@color/appLightBrown"
+
+        app:floatingSearch_dimBackground="false"
+
+        app:floatingSearch_searchBarMarginLeft="@dimen/search_view_inset"
+        app:floatingSearch_searchBarMarginTop="@dimen/search_view_inset"
+        app:floatingSearch_searchBarMarginRight="@dimen/search_view_inset"
+
+        app:floatingSearch_searchHint="Search..."
+        app:floatingSearch_suggestionsListAnimDuration="250"
+        app:floatingSearch_showSearchKey="false"
+        app:floatingSearch_leftActionMode="noLeftAction"
+        app:floatingSearch_menu="@menu/main"
+        app:floatingSearch_close_search_on_keyboard_dismiss="true"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>
