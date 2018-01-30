@@ -18,6 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -29,6 +30,7 @@ import kotlinx.android.synthetic.main.fragment_finder.*
 import locavoreplatine.locafarm.R
 import locavoreplatine.locafarm.di.Injection
 import locavoreplatine.locafarm.model.FarmModel
+import locavoreplatine.locafarm.util.FarmMarkerInfos
 import locavoreplatine.locafarm.util.OnFarmItemClickListener
 import locavoreplatine.locafarm.util.replaceFragment
 import locavoreplatine.locafarm.view.viewAdapter.FinderRecyclerViewAdapter
@@ -156,6 +158,8 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
                 subject.onNext(newQuery)
             } else {
                 fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(getSearchResult(),onFarmItemClickListener)
+                farmsMap.clear()
+                updateFarmMarkers(getSearchResult(), farmsMap)
             }
         }
 
@@ -165,26 +169,31 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
     private fun showResult(result: LiveData<List<FarmModel>>) {
         result.observe(this, Observer<List<FarmModel>> { farms ->
             if (farms != null && farms.isNotEmpty()) {
-                context!!.toast(result.value!![0].toString())
+                //context!!.toast(result.value!![0].toString())
                 val itemsArray: ArrayList<Any> = ArrayList()
                 itemsArray.addAll(result.value!!.sortedWith(compareBy({ it.javaClass.toString() })))
                 fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(itemsArray,onFarmItemClickListener)
                 updateFarmMarkers(farms, farmsMap)
             }else{
-                context!!.toast("No result found !!!")
+                //context!!.toast("No result found !!!")
             }
         })
     }
 
     private fun updateFarmMarkers(farms: List<FarmModel>, farmsMap: GoogleMap){
-        val firstItem = farms[0]
-        val farmPosition = LatLng(firstItem.Latitude, firstItem.Longitude)
-
+        val firstItem = farms.firstOrNull()
+        val farmPosition = LatLng(firstItem!!.Latitude, firstItem.Longitude)
+        farmsMap.clear()
         farms.forEach{
-            farmsMap.addMarker(MarkerOptions().position(LatLng(it.Latitude, it.Longitude)).title(it.name))
-        }
+            val customInfoWindow = FarmMarkerInfos(context)
+            farmsMap.setInfoWindowAdapter(customInfoWindow)
 
-        farmsMap.moveCamera(CameraUpdateFactory.newLatLng(farmPosition))
+            val markerOptions = MarkerOptions().position(LatLng(it.Latitude, it.Longitude)).title(it.name).snippet(it.addr)
+            val  m: Marker = farmsMap.addMarker(markerOptions)
+            m.tag=it
+            m.showInfoWindow()
+        }
+        farmsMap.animateCamera(CameraUpdateFactory.newLatLng(farmPosition))
     }
 
 
