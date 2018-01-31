@@ -14,7 +14,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     private lateinit var user: UserModel
     private lateinit var allUser: List<UserModel>
 
-    fun setUser(id: Int) {
+    fun setUser(id: Long) {
         doAsync {
             val t = userDao.all().blockingGet().size
             Log.e("setuser","$t")

@@ -15,10 +15,13 @@ import locavoreplatine.locafarm.viewModel.FarmProfileViewModel
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import kotlinx.android.synthetic.main.fragment_farm_recycler.*
 
 
 class FarmProfileFragment : Fragment(), LifecycleOwner{
+
+    val name:String = "farmProfileFragment_${arguments?.getLong("farmId")}"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_farm,container,false)
@@ -26,12 +29,22 @@ class FarmProfileFragment : Fragment(), LifecycleOwner{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         val farmProfileViewModel = FarmProfileViewModel(activity!!.application)
-        farmProfileViewModel.setFarm(arguments?.getLong("id")!!)
+        //TODO relace with real user id
+        farmProfileViewModel.init(arguments?.getLong("userId")!!,arguments?.getLong("farmId")!!)
+
         val farm = farmProfileViewModel.getFarm()
         val product = farmProfileViewModel.getProduct()
         val recyclerViewAdapter = FarmRecyclerViewAdapter(product)
         val horizontalLayoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+        val isFavorites = farmProfileViewModel.isFavorite()
+
+        isFavorites.observeForever {
+            Log.e("tag","it")
+            fragment_farm_detail_favorite.isChecked=it!!
+        }
+
         fragment_farm_recycler_view.layoutManager=horizontalLayoutManager
         fragment_farm_recycler_view.adapter=recyclerViewAdapter
         fragment_farm_image.setImageResource(R.drawable.cover)
@@ -70,6 +83,15 @@ class FarmProfileFragment : Fragment(), LifecycleOwner{
                 }
             }
         })
+
+        fragment_farm_detail_favorite.setOnCheckedChangeListener { compoundButton, b ->
+            if (b){
+                farmProfileViewModel.addFavorite()
+            }
+            else{
+                farmProfileViewModel.removeFavorite()
+            }
+        }
 
     }
 }

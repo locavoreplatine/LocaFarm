@@ -6,27 +6,44 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import locavoreplatine.locafarm.database.AppDatabase
-import locavoreplatine.locafarm.model.FarmModel
-import locavoreplatine.locafarm.model.FarmProductMM
-import locavoreplatine.locafarm.model.ProductModel
+import locavoreplatine.locafarm.model.*
 import org.jetbrains.anko.doAsync
 
 class FarmProfileViewModel(application: Application) : AndroidViewModel(application) {
-
     private var farmDao = AppDatabase.getInstance(application).farmDao()
     private var farmProductDao = AppDatabase.getInstance(application).farmProductDao()
-
+    private var userDao = AppDatabase.getInstance(application).userDao()
+    private val favoritesDao = AppDatabase.getInstance(application).favoritesDao()
     private lateinit var farm: FarmModel
     private lateinit var farmProduct: List<ProductModel>
     private lateinit var allFarm: List<FarmModel>
+    private lateinit var user: UserModel
+    private var isFavorites = MutableLiveData<Boolean>()
 
-    fun setFarm(id: Long) {
+    fun init(userId : Long, farmId : Long){
+        setFarm(farmId)
+        setUser(userId)
+        while (!::farm.isInitialized && !::user.isInitialized){
+
+        }
         doAsync {
-            Log.e("farmViewModel", "${farmDao.all().blockingGet().size}")
-            Log.e("farmViewModel", farmDao.findFarmByName("farm nora").blockingFirst()[0].name)
-//            farm = farmDao.findFarmByName("farm nora").blockingFirst()[0]
+            var list =  emptyList<FarmModel>()
+            list = favoritesDao.favoritesInstant(user.userId)
+            isFavorites.postValue(list.contains(farm))
+        }
+    }
+
+    private fun setFarm(id: Long) {
+        doAsync {
             farm = farmDao.getFarmById(id).blockingGet()
             farmProduct = farmProductDao.productByFarm(farm.farmId)
+        }
+    }
+
+    private fun setUser(id: Long) {
+        //TODO replace with real userId when available
+        doAsync {
+            user = userDao.all().blockingGet().get(0)
         }
     }
 
@@ -56,6 +73,31 @@ class FarmProfileViewModel(application: Application) : AndroidViewModel(applicat
 
         }
         return allFarm
+    }
+
+    fun isFavorite(): LiveData<Boolean> {
+        return isFavorites
+    }
+
+    fun addFavorite(){
+        while (!::farm.isInitialized && !::user.isInitialized){
+
+        }
+        val favorites = Favorites(farm.farmId,user.userId)
+        Log.e("Vm", "${favorites.farmId} ${favorites.userId}")
+        favoritesDao.insert(favorites)
+        Log.e("Vm", "${favoritesDao.count()}")
+        isFavorites.postValue(true)
+    }
+
+    fun removeFavorite(){
+        while (!::farm.isInitialized && !::user.isInitialized){
+
+        }
+        val favorites = Favorites(farm.farmId,user.userId)
+        favoritesDao.delete(favorites)
+        Log.e("Vm", "${favoritesDao.count()}")
+        isFavorites.postValue(false)
     }
 
 }

@@ -15,5 +15,7 @@
     <string name="fragment_farm_navigation_button">fragment_farm_navigation_button</string>
     <string name="fragment_farm_left_arrow">left arrow</string>
     <string name="fragment_farm_right_arrow">right arrow</string>
+    <string name="activity_main_bottom_menu_home">home</string>
+    <string name="activity_main_bottom_menu_favorite">favorite</string>
 
 </resources>

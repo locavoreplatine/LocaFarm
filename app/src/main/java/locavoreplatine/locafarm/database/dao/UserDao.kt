@@ -4,7 +4,6 @@ package locavoreplatine.locafarm.database.dao
 import android.arch.persistence.room.*
 import io.reactivex.Flowable
 import io.reactivex.Single
-import locavoreplatine.locafarm.database.dao.BaseDao
 import locavoreplatine.locafarm.model.UserModel
 
 @Dao
@@ -20,7 +19,7 @@ abstract class UserDao: BaseDao<UserModel> {
     abstract fun getUserCount(): Int
 
     @Query("SELECT * FROM UserModel WHERE userId=:userId")
-    abstract fun getUserById(userId: Int?): Single<UserModel>
+    abstract fun getUserById(userId: Long): Single<UserModel>
 
     @Transaction
     @Query("SELECT * FROM UserModel WHERE firstName LIKE '%' || :userName || '%' ORDER BY firstName COLLATE NOCASE ASC LIMIT 10")

@@ -3,7 +3,6 @@ package locavoreplatine.locafarm.viewModel
 import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import android.annotation.SuppressLint
 
 /**
  * Created by sparow on 12/01/18.

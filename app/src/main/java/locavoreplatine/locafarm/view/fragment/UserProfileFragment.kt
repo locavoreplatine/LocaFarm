@@ -18,9 +18,9 @@ class UserProfileFragment : Fragment(), LifecycleOwner{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val userProfilViewModel = UserProfileViewModel(activity!!.application)
-        userProfilViewModel.setUser(arguments?.getInt("id")!!);
-        val user = userProfilViewModel.getUser();
+        val userProfileViewModel = UserProfileViewModel(activity!!.application)
+        userProfileViewModel.setUser(arguments?.getLong("userId")!!);
+        val user = userProfileViewModel.getUser();
             tv1.text=user.firstName
             tv2.text=user.lastName
             tv3.text=user.email

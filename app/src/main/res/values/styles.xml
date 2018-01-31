@@ -5,11 +5,9 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/appLightBrown</item>
         <item name="colorPrimaryDark">@color/appBrown</item>
-        <item name="colorAccent">@color/appBrown</item>
-        <!-- To change the popup menu and app text color  -->
-        <item name="android:textColor">@color/appBlue</item>
-        <!-- To change the background of options menu-->
-        <item name="android:itemBackground">@color/appLightBlue</item>
+        <item name="colorAccent">@color/appBlue</item>
+        <item name="android:textColor">@color/appBrown</item>
+        <item name="android:itemBackground">@color/appLightBrown</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -26,6 +24,15 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="Widget.Button.Toggle" parent="android:Widget">
+        <item name="android:background">@drawable/ic_toggle_bg</item>
+        <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
+    </style>
 
+    <style name="toggleButton" parent="android:Theme.Black">
+        <item name="android:buttonStyleToggle">@style/Widget.Button.Toggle</item>
+        <item name="android:textOn"></item>
+        <item name="android:textOff"></item>
+    </style>
 
 </resources>

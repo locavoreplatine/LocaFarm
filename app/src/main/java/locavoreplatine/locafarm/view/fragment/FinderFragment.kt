@@ -82,10 +82,14 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
         onFarmItemClickListener = object : OnFarmItemClickListener {
             override fun onItemClick(item: FarmModel) {
                 val mActivity = activity as AppCompatActivity
+
                 val fragment=FarmProfileFragment()
                 val bundle = Bundle()
-                bundle.putLong("id",item.farmId)
+                bundle.putLong("farmId",item.farmId)
+                //TODO replace with real userId when available
+                bundle.putLong("userId",arguments?.getLong("userId")!!)
                 fragment.arguments=bundle
+
                 mActivity.replaceFragment(fragment,mActivity.activity_main_fragment_container.id)
             }
         }
@@ -109,9 +113,9 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
     }
 
     private fun getSearchResult(): List<FarmModel> {
-        val viewFarmModel = ViewModelProviders.of(this, viewModelFactory).get(FarmProfileViewModel::class.java)
+        val farmViewModel = ViewModelProviders.of(this, viewModelFactory).get(FarmProfileViewModel::class.java)
         val items: MutableList<FarmModel> = mutableListOf()
-        items.addAll(viewFarmModel.all())
+        items.addAll(farmViewModel.all())
         return items
     }
 
@@ -170,8 +174,7 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
                 subject.onNext(newQuery)
             } else {
                 fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(getSearchResult(),onFarmItemClickListener)
-                farmsMap.clear()
-                updateFarmMarkers(getSearchResult(), farmsMap)
+                updateFarmMarkers(getSearchResult())
             }
         }
 
@@ -185,33 +188,30 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
                 val itemsArray: ArrayList<Any> = ArrayList()
                 itemsArray.addAll(result.value!!.sortedWith(compareBy({ it.javaClass.toString() })))
                 fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(itemsArray,onFarmItemClickListener)
-                updateFarmMarkers(farms, farmsMap)
+                    updateFarmMarkers(farms)
             }else{
                 //context!!.toast("No result found !!!")
             }
         })
     }
 
-    private fun updateFarmMarkers(farms: List<FarmModel>, farmsMap: GoogleMap){
-        val firstItem = farms.firstOrNull()
-        val farmPosition = LatLng(firstItem!!.Latitude, firstItem.Longitude)
-        farmsMap.clear()
-        farms.forEach{
-            val customInfoWindow = FarmMarkerInfos(context)
-            farmsMap.setInfoWindowAdapter(customInfoWindow)
-
-            val markerOptions = MarkerOptions().position(LatLng(it.Latitude, it.Longitude)).title(it.name).snippet(it.addr)
-            val  m: Marker = farmsMap.addMarker(markerOptions)
-            m.tag=it
-            m.showInfoWindow()
+    private fun updateFarmMarkers(farms: List<FarmModel>){
+        if(::farmsMap.isInitialized) {
+            farmsMap.clear()
+            farms.forEach {
+                val customInfoWindow = FarmMarkerInfos(context)
+                farmsMap.setInfoWindowAdapter(customInfoWindow)
+                val markerOptions = MarkerOptions().position(LatLng(it.Latitude, it.Longitude)).title(it.name).snippet(it.addr)
+                val m: Marker = farmsMap.addMarker(markerOptions)
+                m.tag = it
+                m.showInfoWindow()
+            }
         }
-        farmsMap.animateCamera(CameraUpdateFactory.newLatLng(farmPosition))
     }
-
 
     override fun onMapReady(mapM: GoogleMap) {
         farmsMap = mapM
-        updateFarmMarkers(getSearchResult(), farmsMap)
+        updateFarmMarkers(getSearchResult())
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
