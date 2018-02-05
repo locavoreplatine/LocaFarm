@@ -27,6 +27,11 @@ class FarmProfileFragment : Fragment(), LifecycleOwner{
         return inflater.inflate(R.layout.fragment_farm,container,false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        fragment_farm_ratingbar.visibility=View.GONE
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 

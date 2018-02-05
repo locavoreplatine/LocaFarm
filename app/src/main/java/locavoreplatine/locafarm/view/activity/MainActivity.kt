@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main_content.*
 import locavoreplatine.locafarm.R
 import locavoreplatine.locafarm.util.replaceFragment
-import locavoreplatine.locafarm.view.fragment.FavFragment
+import locavoreplatine.locafarm.view.fragment.FavoritesFragment
 import locavoreplatine.locafarm.view.fragment.FinderFragment
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
@@ -30,30 +30,30 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         activity_main_bottom_nav_view.inflateMenu(R.menu.activity_main_bottom_menu)
         activity_main_bottom_nav_view.setOnNavigationItemSelectedListener {
             val fragment: Fragment =
-                when(it.itemId){
-                    R.id.activity_main_bottom_menu_fav -> {
-                            FavFragment()
+                    when (it.itemId) {
+                        R.id.activity_main_bottom_menu_fav -> {
+                            FavoritesFragment()
 //                        HomeFragment()
+                        }
+                        else -> {
+                            FinderFragment()
+                        }
                     }
-                    else -> {
-                        FinderFragment()
-                    }
-                }
-            replaceFragment(fragment,activity_main_fragment_container.id)
+            replaceFragment(fragment, activity_main_fragment_container.id)
             true
         }
         activity_main_bottom_nav_view.setOnNavigationItemReselectedListener {
             val fragment: Fragment =
-                when(it.itemId){
-                    R.id.activity_main_bottom_menu_fav -> {
-                            FavFragment()
+                    when (it.itemId) {
+                        R.id.activity_main_bottom_menu_fav -> {
+                            FavoritesFragment()
 //                        HomeFragment()
+                        }
+                        else -> {
+                            FinderFragment()
+                        }
                     }
-                    else -> {
-                        FinderFragment()
-                    }
-                }
-            replaceFragment(fragment,activity_main_fragment_container.id)
+            replaceFragment(fragment, activity_main_fragment_container.id)
         }
 
         val fragment = FinderFragment()
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         permissionCheckWithPermissionCheck()
     }
 
-    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION)
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     fun permissionCheck() {
         info("Demande de permissions ")
     }
@@ -116,7 +116,16 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         private const val REQUEST_CODE_COARSE_LOCATION = 102
     }
 
-
-
-
+    override fun onBackPressed() {
+        val backStackEntryCount = supportFragmentManager.backStackEntryCount
+        if (backStackEntryCount == 1) {
+            finish()
+        } else {
+            if (backStackEntryCount > 1) {
+                supportFragmentManager.popBackStack()
+            } else {
+                super.onBackPressed()
+            }
+        }
+    }
 }

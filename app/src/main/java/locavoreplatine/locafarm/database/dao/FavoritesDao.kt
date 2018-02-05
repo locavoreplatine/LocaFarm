@@ -19,17 +19,12 @@ abstract class FavoritesDao : BaseDao<Favorites>{
     @Transaction
     @Query("SELECT FarmModel.* FROM FarmModel\n" +
             "INNER JOIN Favorites ON FarmModel.farmId=Favorites.farmId\n")
-    abstract fun all(): Single<List<FarmModel>>
-
-    @Transaction
-    @Query("SELECT FarmModel.* FROM FarmModel\n" +
-            "INNER JOIN Favorites ON FarmModel.farmId=Favorites.farmId\n")
     abstract fun favoritesObservable(): Flowable<List<FarmModel>>
 
     @Transaction
     @Query("SELECT FarmModel.* FROM FarmModel\n" +
             "INNER JOIN Favorites ON FarmModel.farmId=Favorites.farmId\n")
-    abstract fun favoritesInstant(): List<FarmModel>
+    abstract fun favoritesSingle(): Single<List<FarmModel>>
 
 
     @Query("SELECT count(*) FROM Favorites")

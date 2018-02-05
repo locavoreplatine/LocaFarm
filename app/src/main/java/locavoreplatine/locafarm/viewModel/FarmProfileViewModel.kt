@@ -24,8 +24,7 @@ class FarmProfileViewModel(application: Application) : AndroidViewModel(applicat
 
         }
         doAsync {
-            var list =  emptyList<FarmModel>()
-            list = favoritesDao.favoritesInstant()
+            val list: List<FarmModel> = favoritesDao.favoritesSingle().blockingGet()
             isFavorites.postValue(list.contains(farm))
         }
     }

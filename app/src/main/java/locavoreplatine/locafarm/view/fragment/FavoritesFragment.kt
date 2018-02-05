@@ -31,16 +31,15 @@ import locavoreplatine.locafarm.util.FarmMarkerInfos
 import locavoreplatine.locafarm.util.OnFarmItemClickListener
 import locavoreplatine.locafarm.util.replaceFragment
 import locavoreplatine.locafarm.view.viewAdapter.FinderRecyclerViewAdapter
-import locavoreplatine.locafarm.viewModel.FarmProfileViewModel
-import locavoreplatine.locafarm.viewModel.FavViewModel
+import locavoreplatine.locafarm.viewModel.FavoriteViewModel
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import java.util.concurrent.TimeUnit
 
 
-class FavFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger {
+class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger {
 
-    private lateinit var favViewModel: FavViewModel
+    private lateinit var favoriteViewModel: FavoriteViewModel
 
     private lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -75,7 +74,7 @@ class FavFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModelFactory = Injection.provideViewModelFactory(activity!!.application)
-        favViewModel = ViewModelProviders.of(this, viewModelFactory).get(FavViewModel::class.java)
+        favoriteViewModel = ViewModelProviders.of(this, viewModelFactory).get(FavoriteViewModel::class.java)
 
 
         onFarmItemClickListener = object : OnFarmItemClickListener {
@@ -110,9 +109,9 @@ class FavFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger {
     }
 
     private fun getSearchResult(): List<FarmModel> {
-        val favViewModel = ViewModelProviders.of(this, viewModelFactory).get(FavViewModel::class.java)
+        val favViewModel = ViewModelProviders.of(this, viewModelFactory).get(FavoriteViewModel::class.java)
         val items: MutableList<FarmModel> = mutableListOf()
-        items.addAll(favViewModel.all())
+        items.addAll(favViewModel.favoritesSingle())
         return items
     }
 
@@ -130,12 +129,12 @@ class FavFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger {
                 .observeOn(Schedulers.io())
                 .map { it ->
                     info("Finder ViewModel " + it + " Length " + it.length)
-                    favViewModel.findFav()
+                    favoriteViewModel.findFav()
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     info("Show result")
-                    showResult(favViewModel.getFarms())
+                    showResult(favoriteViewModel.getFarms())
                 }
         fragment_fav_mapview.onStart()
     }

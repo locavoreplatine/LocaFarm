@@ -13,34 +13,34 @@ import org.jetbrains.anko.doAsync
  */
 
 
-class FavViewModel(application: Application) : AndroidViewModel(application) {
+class FavoriteViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val favDao = AppDatabase.getInstance(application).favoritesDao()
+    private val favoritesDao = AppDatabase.getInstance(application).favoritesDao()
 
-    private lateinit var farms: LiveData<List<FarmModel>>
+    private lateinit var favoritesObservables: LiveData<List<FarmModel>>
 
-    private lateinit var allFarm: List<FarmModel>
+    private lateinit var allFavorites: List<FarmModel>
 
     fun findFav() {
 
-            farms = LiveDataReactiveStreams.fromPublisher(favDao.favoritesObservable()
+            favoritesObservables = LiveDataReactiveStreams.fromPublisher(favoritesDao.favoritesObservable()
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread()))
     }
 
     fun getFarms(): LiveData<List<FarmModel>> {
-        return farms
+        return favoritesObservables
     }
 
 
-    fun all(): List<FarmModel> {
+    fun favoritesSingle(): List<FarmModel> {
         doAsync {
-            allFarm = favDao.all().blockingGet()
+            allFavorites = favoritesDao.favoritesSingle().blockingGet()
         }
-        while (!::allFarm.isInitialized){
+        while (!::allFavorites.isInitialized){
 
         }
-        return allFarm
+        return allFavorites
     }
 
 }

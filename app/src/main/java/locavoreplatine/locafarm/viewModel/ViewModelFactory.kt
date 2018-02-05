@@ -26,7 +26,7 @@ class ViewModelFactory(private val application: Application): ViewModelProvider.
         return when {
             modelClass.isAssignableFrom(FarmProfileViewModel::class.java) -> FarmProfileViewModel(application = application) as T
             modelClass.isAssignableFrom(FinderViewModel::class.java) -> FinderViewModel(application = application) as T
-            modelClass.isAssignableFrom(FavViewModel::class.java) -> FavViewModel(application = application) as T
+            modelClass.isAssignableFrom(FavoriteViewModel::class.java) -> FavoriteViewModel(application = application) as T
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         }
 
