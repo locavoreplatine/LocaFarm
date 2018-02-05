@@ -12,15 +12,15 @@ import locavoreplatine.locafarm.model.FarmModel
  */
 
 
-class FinderViewModel(application: Application) : AndroidViewModel(application) {
+class FavViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val farmDao = AppDatabase.getInstance(application).farmDao()
+    private val favDao = AppDatabase.getInstance(application).favoritesDao()
 
     private lateinit var farms: LiveData<List<FarmModel>>
 
-    fun findFarmsNames(query: String) {
+    fun findFav() {
 
-            farms = LiveDataReactiveStreams.fromPublisher(farmDao.findFarmByName(query)
+            farms = LiveDataReactiveStreams.fromPublisher(favDao.favoritesObservable()
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread()))
     }

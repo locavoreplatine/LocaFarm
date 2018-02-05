@@ -12,11 +12,10 @@ import locavoreplatine.locafarm.util.PopulateDatabase
 import locavoreplatine.locafarm.util.random
 import org.jetbrains.anko.doAsync
 
-@Database(entities = [(UserModel::class), (FarmModel::class), (ProductModel::class), (FarmProductMM::class),(Favorites::class)], version = 1, exportSchema = false)
+@Database(entities = [(FarmModel::class), (ProductModel::class), (FarmProductMM::class),(Favorites::class)], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun userDao(): UserDao
     abstract fun farmDao(): FarmDao
     abstract fun productDao(): ProductDao
     abstract fun farmProductDao() : FarmProductDao
@@ -39,7 +38,6 @@ abstract class AppDatabase : RoomDatabase() {
                                     doAsync {
                                         getInstance(context).run {
                                             farmDao().insert(*PopulateDatabase.getSampleFarms())
-                                            userDao().insert(*PopulateDatabase.getBaseUsers())
                                             productDao().insert(*PopulateDatabase.getSampleProduct())
                                             val farmList = farmDao().all().blockingGet()
                                             val productList = productDao().all().blockingGet()
@@ -65,7 +63,6 @@ abstract class AppDatabase : RoomDatabase() {
                                     doAsync {
                                         getInstance(context).run {
                                             farmDao().insert(*PopulateDatabase.getSampleFarms())
-                                            userDao().insert(*PopulateDatabase.getBaseUsers())
                                         }
                                     }
                                 }

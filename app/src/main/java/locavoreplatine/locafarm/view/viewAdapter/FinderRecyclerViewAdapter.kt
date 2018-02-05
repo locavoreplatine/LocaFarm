@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import locavoreplatine.locafarm.R
 import locavoreplatine.locafarm.model.FarmModel
-import locavoreplatine.locafarm.model.UserModel
 import android.view.LayoutInflater
 import locavoreplatine.locafarm.util.OnFarmItemClickListener
 import locavoreplatine.locafarm.view.viewHolder.DefaultViewHolder
@@ -22,14 +21,14 @@ class FinderRecyclerViewAdapter(private val items:  List<Any>, private val onFar
         val viewHolder: RecyclerView.ViewHolder
         val inflater = LayoutInflater.from(viewGroup.context)
 
-        when (viewType) {
+        viewHolder = when (viewType) {
             FARM -> {
                 val v2 = inflater.inflate(R.layout.fragment_finder_card_row_farm, viewGroup, false)
-                viewHolder = FarmViewHolder(v2)
+                FarmViewHolder(v2)
             }
             else -> {
                 val v = inflater.inflate(android.R.layout.simple_list_item_1, viewGroup, false)
-                viewHolder = DefaultViewHolder(v)
+                DefaultViewHolder(v)
             }
         }
         return viewHolder

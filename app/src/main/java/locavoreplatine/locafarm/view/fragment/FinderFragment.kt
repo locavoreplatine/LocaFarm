@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arlib.floatingsearchview.FloatingSearchView
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
@@ -86,8 +85,6 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
                 val fragment=FarmProfileFragment()
                 val bundle = Bundle()
                 bundle.putLong("farmId",item.farmId)
-                //TODO replace with real userId when available
-                bundle.putLong("userId",arguments?.getLong("userId")!!)
                 fragment.arguments=bundle
 
                 mActivity.replaceFragment(fragment,mActivity.activity_main_fragment_container.id)

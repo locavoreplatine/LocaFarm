@@ -2,7 +2,6 @@ package locavoreplatine.locafarm.util
 
 import locavoreplatine.locafarm.model.FarmModel
 import locavoreplatine.locafarm.model.ProductModel
-import locavoreplatine.locafarm.model.UserModel
 
 /**
  * Created by sparow on 14/01/18.
@@ -11,12 +10,6 @@ import locavoreplatine.locafarm.model.UserModel
 
 class PopulateDatabase {
     companion object {
-        @JvmStatic
-        fun getBaseUsers(): Array<UserModel> {
-            return arrayOf(
-                    UserModel("anonymous", "anonymous", "mail@locafarm.com", "")
-            )
-        }
 
         @JvmStatic
         fun getSampleFarms(): Array<FarmModel> {

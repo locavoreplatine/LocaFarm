@@ -10,14 +10,12 @@ import android.arch.persistence.room.Index
 
 
 @Entity(tableName = "Favorites",
-        primaryKeys = ["userId", "farmId"],
+        primaryKeys = ["farmId"],
         foreignKeys = [
-            (ForeignKey(entity = FarmModel::class, parentColumns = ["farmId"], childColumns = ["farmId"], onDelete = ForeignKey.CASCADE)),
-            (ForeignKey(entity = UserModel::class, parentColumns = ["userId"], childColumns = ["userId"], onDelete = ForeignKey.CASCADE))
+            (ForeignKey(entity = FarmModel::class, parentColumns = ["farmId"], childColumns = ["farmId"], onDelete = ForeignKey.CASCADE))
         ],
         indices = [
-            (Index(value = ["farmId"])),
-            (Index(value = ["userId"]))
+            (Index(value = ["farmId"]))
         ]
 )
-data class Favorites (var farmId: Long, var userId: Long)
+data class Favorites (var farmId: Long)

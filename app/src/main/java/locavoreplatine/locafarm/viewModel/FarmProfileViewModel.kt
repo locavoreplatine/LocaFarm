@@ -12,23 +12,20 @@ import org.jetbrains.anko.doAsync
 class FarmProfileViewModel(application: Application) : AndroidViewModel(application) {
     private var farmDao = AppDatabase.getInstance(application).farmDao()
     private var farmProductDao = AppDatabase.getInstance(application).farmProductDao()
-    private var userDao = AppDatabase.getInstance(application).userDao()
     private val favoritesDao = AppDatabase.getInstance(application).favoritesDao()
     private lateinit var farm: FarmModel
     private lateinit var farmProduct: List<ProductModel>
     private lateinit var allFarm: List<FarmModel>
-    private lateinit var user: UserModel
     private var isFavorites = MutableLiveData<Boolean>()
 
-    fun init(userId : Long, farmId : Long){
+    fun init(farmId : Long){
         setFarm(farmId)
-        setUser(userId)
-        while (!::farm.isInitialized && !::user.isInitialized){
+        while (!::farm.isInitialized){
 
         }
         doAsync {
             var list =  emptyList<FarmModel>()
-            list = favoritesDao.favoritesInstant(user.userId)
+            list = favoritesDao.favoritesInstant()
             isFavorites.postValue(list.contains(farm))
         }
     }
@@ -40,12 +37,6 @@ class FarmProfileViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    private fun setUser(id: Long) {
-        //TODO replace with real userId when available
-        doAsync {
-            user = userDao.all().blockingGet().get(0)
-        }
-    }
 
     fun getFarm():FarmModel{
         while (!::farm.isInitialized){
@@ -80,21 +71,21 @@ class FarmProfileViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun addFavorite(){
-        while (!::farm.isInitialized && !::user.isInitialized){
+        while (!::farm.isInitialized){
 
         }
-        val favorites = Favorites(farm.farmId,user.userId)
-        Log.e("Vm", "${favorites.farmId} ${favorites.userId}")
+        val favorites = Favorites(farm.farmId)
+        Log.e("Vm", "${favorites.farmId}")
         favoritesDao.insert(favorites)
         Log.e("Vm", "${favoritesDao.count()}")
         isFavorites.postValue(true)
     }
 
     fun removeFavorite(){
-        while (!::farm.isInitialized && !::user.isInitialized){
+        while (!::farm.isInitialized){
 
         }
-        val favorites = Favorites(farm.farmId,user.userId)
+        val favorites = Favorites(farm.farmId)
         favoritesDao.delete(favorites)
         Log.e("Vm", "${favoritesDao.count()}")
         isFavorites.postValue(false)

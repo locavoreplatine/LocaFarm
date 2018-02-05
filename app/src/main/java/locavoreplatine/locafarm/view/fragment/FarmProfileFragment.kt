@@ -31,8 +31,7 @@ class FarmProfileFragment : Fragment(), LifecycleOwner{
         super.onActivityCreated(savedInstanceState)
 
         val farmProfileViewModel = FarmProfileViewModel(activity!!.application)
-        //TODO relace with real user id
-        farmProfileViewModel.init(arguments?.getLong("userId")!!,arguments?.getLong("farmId")!!)
+        farmProfileViewModel.init(arguments?.getLong("farmId")!!)
 
         val farm = farmProfileViewModel.getFarm()
         val product = farmProfileViewModel.getProduct()

@@ -15,14 +15,12 @@ import locavoreplatine.locafarm.model.ProductModel
 abstract class FavoritesDao : BaseDao<Favorites>{
 
     @Query("SELECT FarmModel.* FROM FarmModel\n" +
-            "INNER JOIN Favorites ON FarmModel.farmId=Favorites.farmId\n" +
-            "WHERE Favorites.userId=:userId")
-    abstract fun favoritesObservable(userId: Long): Flowable<List<FarmModel>>
+            "INNER JOIN Favorites ON FarmModel.farmId=Favorites.farmId\n")
+    abstract fun favoritesObservable(): Flowable<List<FarmModel>>
 
     @Query("SELECT FarmModel.* FROM FarmModel\n" +
-            "INNER JOIN Favorites ON FarmModel.farmId=Favorites.farmId\n" +
-            "WHERE Favorites.userId=:userId")
-    abstract fun favoritesInstant(userId: Long): List<FarmModel>
+            "INNER JOIN Favorites ON FarmModel.farmId=Favorites.farmId\n")
+    abstract fun favoritesInstant(): List<FarmModel>
 
     @Query("SELECT count(*) FROM Favorites")
     abstract fun count(): Int
