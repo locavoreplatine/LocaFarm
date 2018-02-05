@@ -110,9 +110,9 @@ class FavFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger {
     }
 
     private fun getSearchResult(): List<FarmModel> {
-        val farmViewModel = ViewModelProviders.of(this, viewModelFactory).get(FarmProfileViewModel::class.java)
+        val favViewModel = ViewModelProviders.of(this, viewModelFactory).get(FavViewModel::class.java)
         val items: MutableList<FarmModel> = mutableListOf()
-        items.addAll(farmViewModel.all())
+        items.addAll(favViewModel.all())
         return items
     }
 
