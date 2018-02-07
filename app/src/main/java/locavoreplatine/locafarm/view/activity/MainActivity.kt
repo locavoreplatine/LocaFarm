@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main_content.*
 import locavoreplatine.locafarm.R
+import locavoreplatine.locafarm.util.CheckUtility.requestLocation
 import locavoreplatine.locafarm.util.replaceFragment
 import locavoreplatine.locafarm.view.fragment.FavoritesFragment
 import locavoreplatine.locafarm.view.fragment.FinderFragment
@@ -55,6 +56,10 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                     }
             replaceFragment(fragment, activity_main_fragment_container.id)
         }
+
+
+        // Request enable location
+        requestLocation(this)
 
         val fragment = FinderFragment()
         replaceFragment(fragment, activity_main_fragment_container.id)

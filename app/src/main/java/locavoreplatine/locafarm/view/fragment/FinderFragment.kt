@@ -1,6 +1,9 @@
 package locavoreplatine.locafarm.view.fragment
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.*
+import android.location.Location
+import android.location.LocationProvider
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -11,6 +14,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arlib.floatingsearchview.FloatingSearchView
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
@@ -18,6 +23,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -27,6 +33,8 @@ import kotlinx.android.synthetic.main.fragment_finder_content_map.*
 import locavoreplatine.locafarm.R
 import locavoreplatine.locafarm.di.Injection
 import locavoreplatine.locafarm.model.FarmModel
+import locavoreplatine.locafarm.util.CheckUtility
+import locavoreplatine.locafarm.util.CheckUtility.canGetLocation
 import locavoreplatine.locafarm.util.FarmMarkerInfos
 import locavoreplatine.locafarm.util.OnFarmItemClickListener
 import locavoreplatine.locafarm.util.replaceFragment
@@ -35,6 +43,7 @@ import locavoreplatine.locafarm.viewModel.FarmProfileViewModel
 import locavoreplatine.locafarm.viewModel.FinderViewModel
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
+import pl.charmas.android.reactivelocation2.ReactiveLocationProvider
 import java.util.concurrent.TimeUnit
 
 
@@ -44,14 +53,18 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
 
     private lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var disposable: Disposable
-
     private val MAPVIEW_BUNDLE_KEY = "MapViewBundleKey"
 
     private lateinit var farmsMap: GoogleMap
 
     private lateinit var onFarmItemClickListener: OnFarmItemClickListener
 
+
+    private lateinit var disposable: CompositeDisposable
+    private lateinit var locationProvider:ReactiveLocationProvider
+    private val request = LocationRequest.create().setPriority(LocationRequest.PRIORITY_LOW_POWER)
+            .setNumUpdates(5)
+            .setInterval(100)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_finder, container, false)
@@ -74,6 +87,8 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        disposable = CompositeDisposable()
+        locationProvider = ReactiveLocationProvider(context)
         viewModelFactory = Injection.provideViewModelFactory(activity!!.application)
         finderViewModel = ViewModelProviders.of(this, viewModelFactory).get(FinderViewModel::class.java)
 
@@ -116,11 +131,13 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
         return items
     }
 
+    @SuppressLint("MissingPermission")
     override fun onStart() {
         super.onStart()
         //SearchView
-        disposable = rxSearchView(fragment_finder_floating_search_view).
+        disposable.add(rxSearchView(fragment_finder_floating_search_view).
                 debounce(300, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
                 .filter { t: String -> t.length > 1 && !(t.startsWith(' ')) }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
@@ -137,7 +154,25 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
                     info("Show result")
                     showResult(finderViewModel.getFarms())
                 }
+        )
+
+        if (CheckUtility.checkFineLocationPermission(context!!.applicationContext) && canGetLocation(context!!.applicationContext)) {
+            disposable.add(locationProvider.getUpdatedLocation(request)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError {
+                        farmsMap.uiSettings.isMyLocationButtonEnabled = false
+                        error("Android reactive location error" + it.toString())
+                    }
+                    .subscribe { t ->
+                        farmsMap.isMyLocationEnabled = true
+                        farmsMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(t.latitude, t.longitude), DEFAULT_ZOOM ))
+                        farmsMap.uiSettings.isMyLocationButtonEnabled = true
+                    }
+            )}
+
         fragment_finder_mapview.onStart()
+
     }
 
     override fun onStop() {
@@ -185,7 +220,7 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
                 val itemsArray: ArrayList<Any> = ArrayList()
                 itemsArray.addAll(result.value!!.sortedWith(compareBy({ it.javaClass.toString() })))
                 fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(itemsArray,onFarmItemClickListener)
-                    updateFarmMarkers(farms)
+                updateFarmMarkers(farms)
             }else{
                 //context!!.toast("No result found !!!")
             }
@@ -225,5 +260,8 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
         }
     }
 
+    companion object {
+        private const val DEFAULT_ZOOM = 10.0f
+    }
 
 }
