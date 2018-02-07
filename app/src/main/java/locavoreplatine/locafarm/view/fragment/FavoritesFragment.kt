@@ -158,14 +158,17 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
                     }
                     .subscribe { t ->
                         farmsMap.isMyLocationEnabled = true
-                        farmsMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(t.latitude, t.longitude), DEFAULT_ZOOM))
+                        farmsMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(t.latitude, t.longitude), DEFAULT_ZOOM))
                         farmsMap.uiSettings.isMyLocationButtonEnabled = true
                     }
             )}
-
         fragment_fav_mapview.onStart()
     }
 
+    override fun onPause() {
+        super.onPause()
+
+    }
     override fun onStop() {
         if (!disposable.isDisposed) {
             disposable.dispose()
@@ -233,6 +236,7 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
     }
 
     override fun onMapReady(mapM: GoogleMap) {
+
         farmsMap = mapM
         updateFarmMarkers(getSearchResult())
     }

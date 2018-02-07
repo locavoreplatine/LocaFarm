@@ -167,7 +167,7 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
                     .subscribe { t ->
                         farmsMap.isMyLocationEnabled = true
                         farmsMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(t.latitude, t.longitude), DEFAULT_ZOOM ))
-                        farmsMap.uiSettings.isMyLocationButtonEnabled = true
+                        // farmsMap.uiSettings.isMyLocationButtonEnabled = true
                     }
             )}
 
