@@ -33,7 +33,6 @@
         app:floatingSearch_suggestionsListAnimDuration="250"
         app:floatingSearch_showSearchKey="false"
         app:floatingSearch_leftActionMode="noLeftAction"
-        app:floatingSearch_menu="@menu/fragment_finder_search_menu"
         app:floatingSearch_close_search_on_keyboard_dismiss="true"
         app:layout_constraintTop_toTopOf="parent"/>
 
