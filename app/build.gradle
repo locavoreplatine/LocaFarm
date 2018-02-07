@@ -94,6 +94,10 @@ dependencies {
     implementation "android.arch.persistence.room:rxjava2:$room"
     implementation 'android.arch.lifecycle:reactivestreams:1.1.0'
 
+    //shortcut
+    implementation 'com.github.matthiasrobbers:shortbread:1.0.2'
+    kapt 'com.github.matthiasrobbers:shortbread-compiler:1.0.2'
+
     //Anko
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
     implementation "org.jetbrains.anko:anko-design:$anko_version"

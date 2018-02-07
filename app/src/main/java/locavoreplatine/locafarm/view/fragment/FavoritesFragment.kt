@@ -2,6 +2,7 @@ package locavoreplatine.locafarm.view.fragment
 
 import android.arch.lifecycle.*
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
@@ -37,6 +38,7 @@ import locavoreplatine.locafarm.util.replaceFragment
 import locavoreplatine.locafarm.view.viewAdapter.FinderRecyclerViewAdapter
 import locavoreplatine.locafarm.viewModel.FavoriteViewModel
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.contentView
 import org.jetbrains.anko.info
 import pl.charmas.android.reactivelocation2.ReactiveLocationProvider
 import java.util.concurrent.TimeUnit
@@ -63,6 +65,14 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_fav, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val activity = activity as AppCompatActivity?
+        if (activity != null) {
+            activity.supportActionBar!!.hide()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

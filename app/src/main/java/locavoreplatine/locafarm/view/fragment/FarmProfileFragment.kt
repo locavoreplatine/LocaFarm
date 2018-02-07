@@ -14,9 +14,13 @@ import locavoreplatine.locafarm.view.viewAdapter.FarmRecyclerViewAdapter
 import locavoreplatine.locafarm.viewModel.FarmProfileViewModel
 import android.content.Intent
 import android.net.Uri
+import android.support.constraint.ConstraintLayout
+import android.support.design.widget.CoordinatorLayout
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import kotlinx.android.synthetic.main.fragment_farm_recycler.*
+import android.support.v7.app.AppCompatActivity
+import org.jetbrains.anko.contentView
 
 
 class FarmProfileFragment : Fragment(), LifecycleOwner{
@@ -30,6 +34,17 @@ class FarmProfileFragment : Fragment(), LifecycleOwner{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fragment_farm_ratingbar.visibility=View.GONE
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val activity = activity as AppCompatActivity?
+        activity!!.supportActionBar!!.show()
+        activity.supportActionBar!!.title=fragment_farm_tv_farmname.text
+        val coordinatorLayout: CoordinatorLayout = activity.contentView as CoordinatorLayout
+        coordinatorLayout.fitsSystemWindows=true
+        coordinatorLayout.invalidate()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

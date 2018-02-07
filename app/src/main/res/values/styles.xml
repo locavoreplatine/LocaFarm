@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/appBlue</item>
         <item name="android:textColor">@color/appBrown</item>
         <item name="android:itemBackground">@color/appLightBrown</item>
+        <item name="actionMenuTextColor">@color/appBrown</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

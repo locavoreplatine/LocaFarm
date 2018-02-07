@@ -227,6 +227,14 @@ class FinderFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLogger
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        val activity = activity as AppCompatActivity?
+        if (activity != null) {
+            activity.supportActionBar!!.hide()
+        }
+    }
+
     private fun updateFarmMarkers(farms: List<FarmModel>){
         if(::farmsMap.isInitialized) {
             farmsMap.clear()

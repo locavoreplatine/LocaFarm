@@ -6,6 +6,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_content.*
 import locavoreplatine.locafarm.R
 import locavoreplatine.locafarm.util.CheckUtility.requestLocation
@@ -15,13 +16,21 @@ import locavoreplatine.locafarm.view.fragment.FinderFragment
 import org.jetbrains.anko.AnkoLogger
 
 import pub.devrel.easypermissions.EasyPermissions
+import shortbread.Shortcut
 
 
+@Shortcut(id = "home", icon = R.drawable.ic_home, shortLabel = "Home")
 class MainActivity : AppCompatActivity(),  EasyPermissions.PermissionCallbacks, AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setSupportActionBar(activity_main_toolbar)
+        supportActionBar?.hide()
+        activity_main_toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
 
         activity_main_bottom_nav_view.inflateMenu(R.menu.activity_main_bottom_menu)
         activity_main_bottom_nav_view.setOnNavigationItemSelectedListener {
@@ -91,8 +100,9 @@ class MainActivity : AppCompatActivity(),  EasyPermissions.PermissionCallbacks, 
             finish()
         } else {
             if (backStackEntryCount > 1) {
-                supportFragmentManager.popBackStack()
+                activity_main_bottom_nav_view.selectedItemId=R.id.activity_main_bottom_menu_home
             } else {
+                activity_main_bottom_nav_view.selectedItemId=R.id.activity_main_bottom_menu_home
                 super.onBackPressed()
             }
         }
@@ -104,6 +114,13 @@ class MainActivity : AppCompatActivity(),  EasyPermissions.PermissionCallbacks, 
         private const val REQUEST_CODE_FINE_LOCATION = 101
         private const val REQUEST_CODE_COARSE_LOCATION = 102
 
+    }
+
+    @Shortcut(id = "favorite", icon = R.drawable.ic_favorite_dark, shortLabel = "Favorite")
+    fun favoriteShortcut(){
+        val fragment = FavoritesFragment()
+        activity_main_bottom_nav_view.selectedItemId=R.id.activity_main_bottom_menu_fav
+        replaceFragment(fragment,activity_main_fragment_container.id)
     }
 
 }
