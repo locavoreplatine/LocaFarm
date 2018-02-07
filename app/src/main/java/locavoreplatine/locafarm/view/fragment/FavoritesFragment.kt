@@ -256,7 +256,7 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
     }
 
     companion object {
-        private const val DEFAULT_ZOOM = 10.0f
+        private const val DEFAULT_ZOOM = 0.0f
     }
 
 }
