@@ -2,7 +2,6 @@ package locavoreplatine.locafarm.view.fragment
 
 import android.arch.lifecycle.*
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
@@ -22,7 +21,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_main_content.*
@@ -38,7 +36,6 @@ import locavoreplatine.locafarm.util.replaceFragment
 import locavoreplatine.locafarm.view.viewAdapter.FinderRecyclerViewAdapter
 import locavoreplatine.locafarm.viewModel.FavoriteViewModel
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.contentView
 import org.jetbrains.anko.info
 import pl.charmas.android.reactivelocation2.ReactiveLocationProvider
 import java.util.concurrent.TimeUnit
@@ -49,8 +46,6 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
     private lateinit var favoriteViewModel: FavoriteViewModel
 
     private lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val MAPVIEW_BUNDLE_KEY = "MapViewBundleKey"
 
     private lateinit var farmsMap: GoogleMap
 
@@ -65,14 +60,6 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_fav, container, false)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val activity = activity as AppCompatActivity?
-        if (activity != null) {
-            activity.supportActionBar!!.hide()
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -125,6 +112,7 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)
         }
+
         fragment_fav_mapview.onCreate(mapViewBundle)
         fragment_fav_mapview.getMapAsync(this)
     }
@@ -137,6 +125,7 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
     }
 
     override fun onStart() {
+        fragment_fav_mapview.onStart()
         super.onStart()
         //SearchView
         disposable.add(rxSearchView(fragment_fav_floating_search_view).
@@ -172,32 +161,82 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
                         farmsMap.uiSettings.isMyLocationButtonEnabled = true
                     }
             )}
-        fragment_fav_mapview.onStart()
     }
+
 
     override fun onPause() {
+        if (!disposable.isDisposed) {
+            disposable.dispose()
+        }
+
         super.onPause()
 
+        if(fragment_fav_mapview != null){
+            fragment_fav_mapview.onPause()
+        }
     }
+
+
+    override fun onResume() {
+        if(fragment_fav_mapview != null){
+            fragment_fav_mapview.onResume()
+        }
+
+        super.onResume()
+
+        val activity = activity as AppCompatActivity?
+        if (activity != null) {
+            activity.supportActionBar!!.hide()
+        }
+    }
+
+
     override fun onStop() {
         if (!disposable.isDisposed) {
             disposable.dispose()
         }
+
+        super.onStop()
+
         if(fragment_fav_mapview != null){
             fragment_fav_mapview.onStop()
         }
-        super.onStop()
     }
+
 
     override fun onDestroy() {
         if (!disposable.isDisposed) {
             disposable.dispose()
         }
+
+        super.onDestroy()
+
         if(fragment_fav_mapview != null) {
             fragment_fav_mapview.onDestroy()
         }
-        super.onDestroy()
+
     }
+
+    override fun onDestroyView() {
+        if (!disposable.isDisposed) {
+            disposable.dispose()
+        }
+
+        super.onDestroyView()
+
+        if(fragment_fav_mapview != null) {
+            fragment_fav_mapview.onDestroy()
+        }
+        //System.gc()
+        info("onDestroy view  B")
+    }
+
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        fragment_fav_mapview.onLowMemory()
+    }
+
 
     private fun rxSearchView(searchView: FloatingSearchView): Observable<String> {
 
@@ -231,8 +270,9 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
         })
     }
 
+
+
     private fun updateFarmMarkers(farms: List<FarmModel>){
-        if(::farmsMap.isInitialized) {
             farmsMap.clear()
             farms.forEach {
                 val customInfoWindow = FarmMarkerInfos(context)
@@ -242,14 +282,17 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
                 m.tag = it
                 m.showInfoWindow()
             }
-        }
     }
 
-    override fun onMapReady(mapM: GoogleMap) {
 
+
+
+
+    override fun onMapReady(mapM: GoogleMap) {
         farmsMap = mapM
         updateFarmMarkers(getSearchResult())
     }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -265,7 +308,10 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
         }
     }
 
+
     companion object {
+
+        private val MAPVIEW_BUNDLE_KEY = "FAV_MAP"
         private const val DEFAULT_ZOOM = 0.0f
     }
 
