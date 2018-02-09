@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.arlib.floatingsearchview.FloatingSearchView
@@ -183,7 +184,6 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
     }
 
 
-
     override fun onResume() {
 
         if (fragment_finder_mapview != null) {
@@ -192,14 +192,21 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
 
         super.onResume()
 
+        val activity = activity as AppCompatActivity?
+
+        if (activity != null) {
+            activity.supportActionBar!!.hide()
+        }
     }
+
 
     override fun onPause() {
 
-//        if (farmsMap != null) {
-//            val mgr = MapStateManager(activity!!.baseContext, MAPS_NAME)
-//            mgr.saveMapState(farmsMap)
-//        }
+        if (farmsMap != null) {
+            val mgr = MapStateManager(activity!!.baseContext, MAPS_NAME)
+            mgr.saveMapState(farmsMap)
+        }
+
         super.onPause()
 
         if (fragment_finder_mapview != null) {
@@ -207,7 +214,6 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
         }
 
     }
-
 
 
     override fun onStop() {
@@ -237,12 +243,16 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
     }
 
     override fun onDestroyView() {
+        if (!disposable.isDisposed) {
+            disposable.dispose()
+        }
+
         super.onDestroyView()
 
         if (fragment_finder_mapview != null) {
             fragment_finder_mapview.onDestroy()
         }
-        //System.gc()
+
         info("onDestroy view  A")
     }
 
@@ -284,7 +294,7 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
                 fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(itemsArray, onFarmItemClickListener)
                 updateFarmMarkers(farms)
 
-                val best =farms.first()
+                val best = farms.first()
                 farmsMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(best.Latitude, best.Longitude), FINDER_ZOOM ))
 
             } else {
@@ -310,16 +320,17 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
 
         farmsMap = mapM
 
-//        val mgr = MapStateManager(context!!.applicationContext, MAPS_NAME)
-//        val position = mgr.savedCameraPosition
-//
-//        if (position != null) {
-//            val update = CameraUpdateFactory.newCameraPosition(position)
-//            farmsMap?.moveCamera(update)
-//            farmsMap?.mapType = mgr.savedMapType
-//        }
+        val mgr = MapStateManager(context!!.applicationContext, MAPS_NAME)
+        val position = mgr.savedCameraPosition
+
+        if (position != null) {
+            val update = CameraUpdateFactory.newCameraPosition(position)
+            farmsMap?.moveCamera(update)
+            farmsMap?.mapType = mgr.savedMapType
+        }
 
         updateFarmMarkers(getSearchResult())
+
 
     }
 

@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.arlib.floatingsearchview.FloatingSearchView
@@ -29,10 +30,7 @@ import kotlinx.android.synthetic.main.fragment_fav_content_map.*
 import locavoreplatine.locafarm.R
 import locavoreplatine.locafarm.di.Injection
 import locavoreplatine.locafarm.model.FarmModel
-import locavoreplatine.locafarm.util.CheckUtility
-import locavoreplatine.locafarm.util.FarmMarkerInfos
-import locavoreplatine.locafarm.util.OnFarmItemClickListener
-import locavoreplatine.locafarm.util.replaceFragment
+import locavoreplatine.locafarm.util.*
 import locavoreplatine.locafarm.view.viewAdapter.FinderRecyclerViewAdapter
 import locavoreplatine.locafarm.viewModel.FavoriteViewModel
 import org.jetbrains.anko.AnkoLogger
@@ -165,9 +163,9 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
 
 
     override fun onPause() {
-        if (!disposable.isDisposed) {
-            disposable.dispose()
-        }
+
+            val mgr = MapStateManager(activity!!.baseContext, MAPS_NAME)
+            mgr.saveMapState(farmsMap)
 
         super.onPause()
 
@@ -185,6 +183,7 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
         super.onResume()
 
         val activity = activity as AppCompatActivity?
+
         if (activity != null) {
             activity.supportActionBar!!.hide()
         }
@@ -221,14 +220,11 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
         if (!disposable.isDisposed) {
             disposable.dispose()
         }
-
         super.onDestroyView()
 
         if(fragment_fav_mapview != null) {
             fragment_fav_mapview.onDestroy()
         }
-        //System.gc()
-        info("onDestroy view  B")
     }
 
 
@@ -290,6 +286,16 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
 
     override fun onMapReady(mapM: GoogleMap) {
         farmsMap = mapM
+
+        val mgr = MapStateManager(context!!.applicationContext, MAPS_NAME)
+        val position = mgr.savedCameraPosition
+
+        if (position != null) {
+            val update = CameraUpdateFactory.newCameraPosition(position)
+            farmsMap.moveCamera(update)
+            farmsMap.mapType = mgr.savedMapType
+        }
+
         updateFarmMarkers(getSearchResult())
     }
 
@@ -312,6 +318,7 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
     companion object {
 
         private val MAPVIEW_BUNDLE_KEY = "FAV_MAP"
+        private const val MAPS_NAME = "FVORITES"
         private const val DEFAULT_ZOOM = 0.0f
     }
 
