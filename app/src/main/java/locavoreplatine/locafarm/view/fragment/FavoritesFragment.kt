@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.arlib.floatingsearchview.FloatingSearchView
@@ -62,6 +61,7 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         fragment_fav_floating_search_view.setOnFocusChangeListener(object : FloatingSearchView.OnFocusChangeListener {
             override fun onFocus() {
                 Log.d("1", "onFocus()")
@@ -101,17 +101,7 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
         fragment_fav_recycler_view.itemAnimator = DefaultItemAnimator()
         fragment_fav_recycler_view.adapter = FinderRecyclerViewAdapter(getSearchResult(),onFarmItemClickListener)
 
-        //MapsView
-        // *** IMPORTANT ***
-        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
-        // objects or sub-Bundles.
-        var mapViewBundle: Bundle? = null
-
-        if (savedInstanceState != null) {
-            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)
-        }
-
-        fragment_fav_mapview.onCreate(mapViewBundle)
+        fragment_fav_mapview.onCreate(savedInstanceState)
         fragment_fav_mapview.getMapAsync(this)
     }
 
@@ -297,23 +287,17 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
         }
 
         updateFarmMarkers(getSearchResult())
-    }
 
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        var mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY)
-        if (mapViewBundle == null) {
-            mapViewBundle = Bundle()
-            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle)
+        farmsMap.setOnMapClickListener {
+            fragment_fav_floating_search_view.visibility = View.GONE
         }
 
-        if(fragment_fav_mapview != null){
-            fragment_fav_mapview.onSaveInstanceState(mapViewBundle)
+        farmsMap.setOnCameraIdleListener{
+            fragment_fav_floating_search_view.visibility = View.VISIBLE
         }
-    }
 
+
+    }
 
     companion object {
 

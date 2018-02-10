@@ -1,15 +1,12 @@
 package locavoreplatine.locafarm.view.fragment
 
-import android.annotation.SuppressLint
 import android.arch.lifecycle.*
 import android.location.Location
-import android.location.LocationProvider
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -17,18 +14,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_main_content.*
@@ -54,7 +48,7 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
 
     private lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private var farmsMap: GoogleMap? = null
+    private lateinit var farmsMap: GoogleMap
 
     private var location: Location? = null
 
@@ -107,22 +101,30 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
             }
         }
 
+
+        fragment_finder_mapview.setOnTouchListener { _, event ->
+
+            info("Touchhhhh")
+            when (event.action) {
+                MotionEvent.ACTION_BUTTON_PRESS -> {
+                    info("GONE")
+                    fragment_finder_floating_search_view.visibility = View.GONE
+                }
+                MotionEvent.ACTION_BUTTON_RELEASE -> {
+                    info("Visible")
+                    fragment_finder_floating_search_view.visibility = View.VISIBLE
+                }
+            }
+            false
+        }
+
+
         //Finder RecyclerView
         fragment_finder_recycler_view.layoutManager = LinearLayoutManager(context)
         fragment_finder_recycler_view.itemAnimator = DefaultItemAnimator()
         fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(getSearchResult(), onFarmItemClickListener)
 
-        //MapsView
-        // *** IMPORTANT ***
-        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
-        // objects or sub-Bundles.
-        var mapViewBundle: Bundle? = null
-
-        if (savedInstanceState != null) {
-            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)
-        }
-
-        fragment_finder_mapview.onCreate(mapViewBundle)
+        fragment_finder_mapview.onCreate(savedInstanceState)
 
         fragment_finder_mapview.getMapAsync(this)
     }
@@ -168,14 +170,14 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnError {
-                        farmsMap?.uiSettings?.isMyLocationButtonEnabled = false
+                        farmsMap.uiSettings.isMyLocationButtonEnabled = false
                         error("Android reactive location error" + it.toString())
                     }
                     .subscribe { t ->
 
                         location = t
-                        farmsMap?.isMyLocationEnabled = true
-                        farmsMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(t.latitude, t.longitude), DEFAULT_ZOOM))
+                        farmsMap.isMyLocationEnabled = true
+                        // farmsMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(t.latitude, t.longitude), DEFAULT_ZOOM))
                         // farmsMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(t.latitude, t.longitude), DEFAULT_ZOOM ))
                         // farmsMap.uiSettings.isMyLocationButtonEnabled = true
                     }
@@ -202,10 +204,8 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
 
     override fun onPause() {
 
-        if (farmsMap != null) {
-            val mgr = MapStateManager(activity!!.baseContext, MAPS_NAME)
-            mgr.saveMapState(farmsMap)
-        }
+        val mgr = MapStateManager(activity!!.baseContext, MAPS_NAME)
+        mgr.saveMapState(farmsMap)
 
         super.onPause()
 
@@ -277,7 +277,7 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
 
                 fragment_finder_recycler_view.adapter = FinderRecyclerViewAdapter(getSearchResult(), onFarmItemClickListener)
                 updateFarmMarkers(getSearchResult())
-                farmsMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location!!.latitude, location!!.longitude), DEFAULT_ZOOM ))
+                farmsMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location!!.latitude, location!!.longitude), DEFAULT_ZOOM))
             }
         }
 
@@ -295,7 +295,7 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
                 updateFarmMarkers(farms)
 
                 val best = farms.first()
-                farmsMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(best.Latitude, best.Longitude), FINDER_ZOOM ))
+                farmsMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(best.Latitude, best.Longitude), FINDER_ZOOM))
 
             } else {
                 //context!!.toast("No result found !!!")
@@ -304,15 +304,15 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
     }
 
     private fun updateFarmMarkers(farms: List<FarmModel>) {
-        //if (farmsMap == null) {
-            farms.forEach {
-                val customInfoWindow = FarmMarkerInfos(context)
-                farmsMap?.setInfoWindowAdapter(customInfoWindow)
-                val markerOptions = MarkerOptions().position(LatLng(it.Latitude, it.Longitude)).title(it.name).snippet(it.addr)
-                val m: Marker = farmsMap!!.addMarker(markerOptions)
-                m.tag = it
-                m.showInfoWindow()
-          //  }
+
+        farms.forEach {
+            val customInfoWindow = FarmMarkerInfos(context)
+            farmsMap.setInfoWindowAdapter(customInfoWindow)
+            val markerOptions = MarkerOptions().position(LatLng(it.Latitude, it.Longitude)).title(it.name).snippet(it.addr)
+            val m: Marker = farmsMap.addMarker(markerOptions)
+            m.tag = it
+            m.showInfoWindow()
+
         }
     }
 
@@ -325,27 +325,21 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
 
         if (position != null) {
             val update = CameraUpdateFactory.newCameraPosition(position)
-            farmsMap?.moveCamera(update)
-            farmsMap?.mapType = mgr.savedMapType
+            farmsMap.moveCamera(update)
+            farmsMap.mapType = mgr.savedMapType
         }
 
         updateFarmMarkers(getSearchResult())
 
 
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        var mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY)
-        if (mapViewBundle == null) {
-            mapViewBundle = Bundle()
-            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle)
+        farmsMap.setOnMapClickListener {
+            fragment_finder_floating_search_view.visibility = View.GONE
         }
 
-        if (fragment_finder_mapview != null) {
-            fragment_finder_mapview.onSaveInstanceState(mapViewBundle)
+        farmsMap.setOnCameraIdleListener {
+            fragment_finder_floating_search_view.visibility = View.VISIBLE
         }
+
     }
 
     companion object {
