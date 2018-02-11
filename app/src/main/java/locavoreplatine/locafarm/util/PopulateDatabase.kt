@@ -1,6 +1,7 @@
 package locavoreplatine.locafarm.util
 
 import locavoreplatine.locafarm.model.FarmModel
+import locavoreplatine.locafarm.model.FarmProductMM
 import locavoreplatine.locafarm.model.ProductModel
 
 /**
@@ -14,14 +15,10 @@ class PopulateDatabase {
         @JvmStatic
         fun getSampleFarms(): Array<FarmModel> {
             return arrayOf(
-                    FarmModel("farm nora", "farm01", 50.64570390000001, 3.0609391000000414, 1, "nora", "8 Rue de Jemmapes, Lille, France"),
-                    FarmModel("farm santa", "farm02", 10.0, 10.0, 0, "santa", "2"),
-                    FarmModel("farm celia", "farm03", 20.0, 20.0, 1, "celia", "3"),
-                    FarmModel("farm moncef", "farm04", 10.0, 10.0, 0, "moncef", "4"),
-                    FarmModel("farm violetta", "farm05", 20.0, 20.0, 1, "violetta", "5"),
-                    FarmModel("farm bouacem", "farm06", 10.0, 10.0, 0, "bouacem", "6"),
-                    FarmModel("farm razouk", "farm07", 20.0, 20.0, 1, "razouk", "7"),
-                    FarmModel("farm damien", "farm08", 10.0, 10.0, 0, "damien", "8")
+
+                    FarmModel("Le drive fermier de Lomme", "7 agriculteurs et l'exploitation du lycée Horticole de Lomme ont décidé de se regrouper pour monter le projet du Drive Fermier de Lomme.", 50.649149, 2.993104, 0, "Coopérative", "77 rue de la Mitterie Nord/Lomme (59160),France"),
+                    FarmModel("La Flamanderie - Ferme DEMAN", "La ferme est une bâtisse ancienne en briques rouges. Le point de vente est en front à rue. Toute la découpe et les préparations sont faites sur place dans notre atelier de transformation", 50.5711717, 3.051176, 0, "Gonzague et Jean-Roch Deman ", " 3 rue Etienne Dolet Impasse de l'Eglise 59175 TEMPLEMARS"),
+                    FarmModel("Le rayon fruits et légumes du Panier VertAu Panier Vert", "Venez découvrir, seul ou en groupe, une exploitation agricole et son environnement humain, animal et naturel", 50.7138968,  3.0001634000000195, 1, "Christine Delecluse", "21 Rue de Comines 59890 QUESNOY SUR DEULE")
             )
         }
 

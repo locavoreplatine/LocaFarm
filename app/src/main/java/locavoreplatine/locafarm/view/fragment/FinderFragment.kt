@@ -177,7 +177,7 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
 
                         location = t
                         farmsMap.isMyLocationEnabled = true
-                        // farmsMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(t.latitude, t.longitude), DEFAULT_ZOOM))
+                        farmsMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(t.latitude, t.longitude), DEFAULT_ZOOM))
                         // farmsMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(t.latitude, t.longitude), DEFAULT_ZOOM ))
                         // farmsMap.uiSettings.isMyLocationButtonEnabled = true
                     }
@@ -204,9 +204,10 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
 
     override fun onPause() {
 
-        val mgr = MapStateManager(activity!!.baseContext, MAPS_NAME)
-        mgr.saveMapState(farmsMap)
-
+        if (::farmsMap.isInitialized) {
+            val mgr = MapStateManager(activity!!.baseContext, MAPS_NAME)
+            mgr.saveMapState(farmsMap)
+        }
         super.onPause()
 
         if (fragment_finder_mapview != null) {
@@ -333,18 +334,22 @@ class FinderFragment : Fragment(), LifecycleOwner, OnMapReadyCallback, AnkoLogge
 
 
         farmsMap.setOnMapClickListener {
-            fragment_finder_floating_search_view.visibility = View.GONE
+            if(fragment_finder_floating_search_view!=null) {
+                fragment_finder_floating_search_view.visibility = View.GONE
+            }
         }
 
         farmsMap.setOnCameraIdleListener {
-            fragment_finder_floating_search_view.visibility = View.VISIBLE
+            if(fragment_finder_floating_search_view!=null) {
+                fragment_finder_floating_search_view.visibility = View.VISIBLE
+            }
         }
 
     }
 
     companion object {
-        private const val DEFAULT_ZOOM = 0.0f
-        private const val FINDER_ZOOM = 10.0f
+        private const val DEFAULT_ZOOM = 10.0f
+        private const val FINDER_ZOOM = 15.0f
         private const val MAPS_NAME = "FINDER"
         private val MAPVIEW_BUNDLE_KEY = "FINDER_MAP"
     }

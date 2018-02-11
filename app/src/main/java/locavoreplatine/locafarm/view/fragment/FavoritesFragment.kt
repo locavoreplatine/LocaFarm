@@ -289,11 +289,16 @@ class FavoritesFragment : Fragment(), LifecycleOwner,OnMapReadyCallback, AnkoLog
         updateFarmMarkers(getSearchResult())
 
         farmsMap.setOnMapClickListener {
-            fragment_fav_floating_search_view.visibility = View.GONE
+            if (fragment_fav_floating_search_view!= null){
+                fragment_fav_floating_search_view.visibility = View.GONE
+            }
+
         }
 
         farmsMap.setOnCameraIdleListener{
+            if (fragment_fav_floating_search_view!= null){
             fragment_fav_floating_search_view.visibility = View.VISIBLE
+            }
         }
 
 
