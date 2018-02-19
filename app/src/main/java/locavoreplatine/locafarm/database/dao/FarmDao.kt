@@ -11,9 +11,9 @@ abstract class FarmDao: BaseDao<FarmModel> {
     @Query("SELECT * FROM FarmModel")
     abstract fun all(): Single<List<FarmModel>>
 
-    @Transaction
-    @Query("SELECT * FROM FarmModel WHERE farmId IN (:farmIds)")
-    abstract fun getMultipleFarmByIds(farmIds: IntArray): List<FarmModel>
+//    @Transaction
+//    @Query("SELECT * FROM FarmModel WHERE farmId IN (:farmIds)")
+//    abstract fun getMultipleFarmByIds(farmIds: IntArray): List<FarmModel>
 
     @Query("SELECT count(*) FROM FarmModel")
     abstract fun getFarmCount(): Int

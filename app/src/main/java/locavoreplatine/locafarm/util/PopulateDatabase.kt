@@ -16,9 +16,9 @@ class PopulateDatabase {
         fun getSampleFarms(): Array<FarmModel> {
             return arrayOf(
 
-                    FarmModel("Le drive fermier de Lomme", "7 agriculteurs et l'exploitation du lycée Horticole de Lomme ont décidé de se regrouper pour monter le projet du Drive Fermier de Lomme.", 50.649149, 2.993104, 0, "Coopérative", "77 rue de la Mitterie Nord/Lomme (59160),France"),
-                    FarmModel("La Flamanderie - Ferme DEMAN", "La ferme est une bâtisse ancienne en briques rouges. Le point de vente est en front à rue. Toute la découpe et les préparations sont faites sur place dans notre atelier de transformation", 50.5711717, 3.051176, 0, "Gonzague et Jean-Roch Deman ", " 3 rue Etienne Dolet Impasse de l'Eglise 59175 TEMPLEMARS"),
-                    FarmModel("Le rayon fruits et légumes du Panier VertAu Panier Vert", "Venez découvrir, seul ou en groupe, une exploitation agricole et son environnement humain, animal et naturel", 50.7138968,  3.0001634000000195, 1, "Christine Delecluse", "21 Rue de Comines 59890 QUESNOY SUR DEULE")
+                    FarmModel("Le drive fermier de Lomme", "7 agriculteurs et l'exploitation du lycée Horticole de Lomme ont décidé de se regrouper pour monter le projet du Drive Fermier de Lomme.", 50.649149, 2.993104, 0, "Coopérative", "77 rue de la Mitterie Nord/Lomme (59160),France",0,0,10),
+                    FarmModel("La Flamanderie - Ferme DEMAN", "La ferme est une bâtisse ancienne en briques rouges. Le point de vente est en front à rue. Toute la découpe et les préparations sont faites sur place dans notre atelier de transformation", 50.5711717, 3.051176, 0, "Gonzague et Jean-Roch Deman ", " 3 rue Etienne Dolet Impasse de l'Eglise 59175 TEMPLEMARS",0,0,11),
+                    FarmModel("Le rayon fruits et légumes du Panier VertAu Panier Vert", "Venez découvrir, seul ou en groupe, une exploitation agricole et son environnement humain, animal et naturel", 50.7138968,  3.0001634000000195, 1, "Christine Delecluse", "21 Rue de Comines 59890 QUESNOY SUR DEULE",0,0,12)
             )
         }
 
