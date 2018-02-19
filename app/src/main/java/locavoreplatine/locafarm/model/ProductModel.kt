@@ -8,7 +8,8 @@ import android.arch.persistence.room.PrimaryKey
  */
 @Entity
 data class ProductModel(
-        var name : String,
+        var name : String
+){
         @PrimaryKey(autoGenerate = true)
         var productId :Long = 0
-)
+}
