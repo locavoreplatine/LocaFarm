@@ -139,39 +139,39 @@ class UiTest {
         onView(withId(R.id.fragment_finder_recycler_view)).check(matches(isDisplayed()))
         onView(withId(R.id.fragment_finder_mapview)).check(matches(isDisplayed()))
     }
-}
+    fun setSearchText(): ViewAction {
+        return  object  : ViewAction {
+            override fun getConstraints(): Matcher<View> {
+                return isAssignableFrom(FloatingSearchView::class.java)
+            }
 
-fun setSearchText(): ViewAction {
-    return  object  : ViewAction {
-        override fun getConstraints(): Matcher<View> {
-            return isAssignableFrom(FloatingSearchView::class.java)
+
+            override fun getDescription(): String {
+                return "whatever"
+            }
+
+            override fun perform(uiController: UiController, view: View) {
+                val yourCustomView = view as FloatingSearchView
+                yourCustomView.setSearchText("Flamanderie")
+            }
         }
 
-
-        override fun getDescription(): String {
-            return "whatever"
-        }
-
-        override fun perform(uiController: UiController, view: View) {
-            val yourCustomView = view as FloatingSearchView
-            yourCustomView.setSearchText("Flamanderie")
-        }
     }
 
-}
+    fun waitFor(millis: Long): ViewAction {
+        return object : ViewAction {
+            override fun getConstraints(): Matcher<View> {
+                return isRoot()
+            }
 
-fun waitFor(millis: Long): ViewAction {
-    return object : ViewAction {
-        override fun getConstraints(): Matcher<View> {
-            return isRoot()
-        }
+            override fun getDescription(): String {
+                return "Wait for $millis milliseconds."
+            }
 
-        override fun getDescription(): String {
-            return "Wait for $millis milliseconds."
-        }
-
-        override fun perform(uiController: UiController, view: View) {
-            uiController.loopMainThreadForAtLeast(millis)
+            override fun perform(uiController: UiController, view: View) {
+                uiController.loopMainThreadForAtLeast(millis)
+            }
         }
     }
 }
+
