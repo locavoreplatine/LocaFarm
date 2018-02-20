@@ -9,6 +9,7 @@ import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.rule.ActivityTestRule
+import android.support.test.rule.GrantPermissionRule
 import android.support.test.runner.AndroidJUnit4
 import android.view.View
 import com.arlib.floatingsearchview.FloatingSearchView
@@ -34,7 +35,12 @@ class UiTest {
     @Rule
     @JvmField
     val activityTestRule = ActivityTestRule<MainActivity>(MainActivity::class.java)
-    var lastItemForTest = 0
+
+    @Rule
+    @JvmField
+    val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION)
+
+    private var lastItemForTest = 0
 
     @Before
     fun setup() {
