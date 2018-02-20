@@ -98,7 +98,7 @@ class UiTest {
         onView(withId(R.id.activity_main_bottom_menu_fav)).perform(click())
         onView(withId(R.id.activity_main_bottom_menu_home)).perform(click())
         onView(withId(R.id.fragment_finder_recycler_view)).perform(RecyclerViewActions.actionOnItem<FarmViewHolder>(hasDescendant(withText("Le drive fermier de Lomme")), click()))
-        onView(withId(R.id.fragment_farm_recycler_view)).perform(RecyclerViewActions.scrollToPosition<ProductViewHolder>(2))
+        onView(withId(R.id.fragment_farm_recycler_view)).perform(RecyclerViewActions.scrollToPosition<ProductViewHolder>(5))
         onView(withId(R.id.fragment_farm_arrow_left)).check(matches(isDisplayed()))
         onView(withId(R.id.fragment_farm_arrow_right)).check(matches(isDisplayed()))
     }

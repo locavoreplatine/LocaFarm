@@ -2,6 +2,8 @@
 
 buildscript {
     ext.kotlin_version = '1.2.21'
+    ext.jacoco_version = '0.8.0'
+
     repositories {
         google()
         jcenter()
@@ -9,7 +11,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'org.jacoco:org.jacoco.core:0.8.0'
+        classpath "org.jacoco:org.jacoco.core:$jacoco_version"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.1"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -25,4 +28,36 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+apply plugin: "org.sonarqube"
+
+sonarqube {
+    androidVariant 'debug'
+
+    properties {
+        property "sonar.verbose", true
+//        property "sonar.login", "53b0f98597c44c6d9f19e76e3c1d7f2026dd0666"
+        property "sonar.host.url", "http://localhost:9000"
+
+        property "sonar.issuesReport.html.enable", "true"
+        property "sonar.issuesReport.console.enable", "true"
+
+        property "detekt.sonar.kotlin.config.path", "detekt-config.yml"
+
+        property "sonar.sources", "app/src/main/java"
+        property "sonar.tests", "app/src/test/java"
+
+        property "sonar.exclusions", "**/FarmProductDao.kt"
+
+        property "sonar.coverage.exclusions", "app/src/main/java/locavoreplatine/locafarm/database/dao/FarmProductDao.kt"
+        property "sonar.test.exclusions", "app/src/main/java/locavoreplatine/locafarm/database/dao/FarmProductDao.kt"
+        property "sonar.cpd.exclusions", "app/src/main/java/locavoreplatine/locafarm/database/dao/FarmProductDao.kt "
+
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.java.binaries", "${rootProject.projectDir}/app/build/intermediates/classes," +
+                "${rootProject.projectDir}/app/build/tmp/kotlin-classes"
+
+        property 'sonar.jacoco.reportPaths', "${rootProject.projectDir}/app/build/jacoco/testDebugUnitTest.exec"
+    }
 }
